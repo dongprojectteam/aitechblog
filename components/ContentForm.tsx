@@ -1,9 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import categoriesData from '@/data/categories.json';
 // import { useRouter } from 'next/navigation';
-
-const CATEGORIES = ['Generative AI'];
 
 interface ContentFormProps {
   post: Post | null;
@@ -14,13 +13,17 @@ export default function ContentForm({ post = null, onUpdate = null }: ContentFor
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [tags, setTags] = useState('');
-  const [category, setCategory] = useState(CATEGORIES[0]);
+  const [category, setCategory] = useState('');
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const [privateMessage, setPrivateMessage] = useState('');
+  const [categories, setCategories] = useState<string[]>([]);
 
   // const router = useRouter();
 
   useEffect(() => {
+    setCategories(categoriesData.categories);
+    setCategory(categoriesData.categories[0]);
+
     if (post) {
       setTitle(post.title);
       setContent(post.content);
@@ -156,6 +159,28 @@ export default function ContentForm({ post = null, onUpdate = null }: ContentFor
     }
   };
 
+  const deleteDraft = async () => {
+    try {
+      const response = await fetch('/api/drafts?fileName=content_draft.json', {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        alert('Draft deleted successfully!');
+        setTitle('');
+        setContent('');
+        setTags('');
+        setCategory(CATEGORIES[0]);
+        setUploadedImages([]);
+        setPrivateMessage('');
+      } else {
+        alert('Failed to delete draft');
+      }
+    } catch (error) {
+      console.error('Error deleting draft:', error);
+      alert('Error deleting draft');
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
@@ -166,8 +191,10 @@ export default function ContentForm({ post = null, onUpdate = null }: ContentFor
           onChange={(e) => setCategory(e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 rounded-md"
         >
-          {CATEGORIES.map((cat) => (
-            <option key={cat} value={cat}>{cat}</option>
+          {categories.map((cat) => (
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
           ))}
         </select>
       </div>
@@ -249,11 +276,14 @@ export default function ContentForm({ post = null, onUpdate = null }: ContentFor
         </button>
         {!post && (
           <>
-            <button type="button" onClick={saveDraft} className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">
+            <button type="button" onClick={saveDraft} className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2">
               Save Draft
             </button>
-            <button type="button" onClick={loadDraft} className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600">
+            <button type="button" onClick={loadDraft} className="bg-green-500 text-white px-4 py-2 rounded-md mr-2">
               Load Draft
+            </button>
+            <button type="button" onClick={deleteDraft} className="bg-red-500 text-white px-4 py-2 rounded-md">
+              Delete Draft
             </button>
           </>
         )}
