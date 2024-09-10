@@ -1,8 +1,22 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
-import { getPostData, getSortedPostsData } from '../../../lib/posts'
+import { getPostData, getSortedPostsData } from '@/lib/posts'
 
 const SURROUNDING_POSTS_COUNT = 2; // 현재 포스트 주변에 표시할 포스트 수
 const RECENT_POSTS_COUNT = 5; // 최신 포스트 표시 수
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const post = await getPostData(params.slug)
+  return {
+    title: post.title,
+    description: post.title,
+    openGraph: {
+      title: post.title,
+      description: post.title,
+      images: post.uploadedImages.length > 0 ? post.uploadedImages : ['/og-image.jpg'],
+    },
+  }
+}
 
 export default async function Post({ params }: { params: { slug: string } }) {
   const postData = await getPostData(params.slug)
