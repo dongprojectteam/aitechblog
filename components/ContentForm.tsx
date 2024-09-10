@@ -1,8 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import categoriesData from '@/data/categories.json';
-// import { useRouter } from 'next/navigation';
 
 interface ContentFormProps {
   post: Post | null;
@@ -18,7 +17,27 @@ export default function ContentForm({ post = null, onUpdate = null }: ContentFor
   const [privateMessage, setPrivateMessage] = useState('');
   const [categories, setCategories] = useState<string[]>([]);
 
-  // const router = useRouter();
+  const loadDraft = useCallback(async () => {
+    try {
+      const response = await fetch('/api/drafts?fileName=content_draft.json');
+      if (response.ok) {
+        const draftData = await response.json();
+        setTitle(draftData.title || '');
+        setContent(draftData.content || '');
+        setTags(draftData.tags || '');
+        setCategory(draftData.category || categories[0]);
+        setUploadedImages(draftData.uploadedImages || []);
+        setPrivateMessage(draftData.privateMessage || '');
+        console.log('Draft loaded successfully!');
+      } else if (response.status === 404) {
+        console.log('No draft found');
+      } else {
+        console.error('Failed to load draft');
+      }
+    } catch (error) {
+      console.error('Error loading draft:', error);
+    }
+  }, [categories]);
 
   useEffect(() => {
     setCategories(categoriesData.categories);
@@ -34,7 +53,7 @@ export default function ContentForm({ post = null, onUpdate = null }: ContentFor
     } else {
       loadDraft();
     }
-  }, [post]);
+  }, [post, loadDraft]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -54,30 +73,40 @@ export default function ContentForm({ post = null, onUpdate = null }: ContentFor
     const url = post ? `/api/posts/?fileName=${post.id || post.slug}.md` : '/api/posts';
     const method = post ? 'PUT' : 'POST';
 
-    const response = await fetch(url, {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(postData),
-    });
+    try {
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postData),
+      });
 
-    if (response.ok) {
-      alert(post ? 'Post updated successfully!' : 'Post created successfully!');
-      if (onUpdate) {
-        onUpdate();
+      if (response.ok) {
+        alert(post ? 'Post updated successfully!' : 'Post created successfully!');
+        if (onUpdate) {
+          onUpdate();
+        } else {
+          resetForm();
+        }
       } else {
-        setTitle('');
-        setContent('');
-        setTags('');
-        setCategory(CATEGORIES[0]);
-        setUploadedImages([]);
-        setPrivateMessage('');
+        const errorData = await response.json();
+        console.warn('API Error:', errorData);
+        alert(post ? 'Failed to update post' : 'Failed to create post');
       }
-    } else {
-      console.warn(response)
-      alert(post ? 'Failed to update post' : 'Failed to create post');
+    } catch (error) {
+      console.error('Network Error:', error);
+      alert('An error occurred while saving the post');
     }
+  };
+
+  const resetForm = () => {
+    setTitle('');
+    setContent('');
+    setTags('');
+    setCategory(categories[0]);
+    setUploadedImages([]);
+    setPrivateMessage('');
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,12 +127,11 @@ export default function ContentForm({ post = null, onUpdate = null }: ContentFor
         if (data.success) {
           const fullImageUrl = `${window.location.origin}${data.filepath}`;
           setUploadedImages(prev => [...prev, fullImageUrl]);
-
           const imageMarkdown = `![${file.name}](${fullImageUrl})`;
           setContent(prevContent => prevContent + '\n\n' + imageMarkdown);
+        } else {
+          alert('Failed to upload image');
         }
-      } else {
-        alert('Failed to upload image');
       }
     } catch (error) {
       console.error('Error uploading image:', error);
@@ -136,29 +164,6 @@ export default function ContentForm({ post = null, onUpdate = null }: ContentFor
     }
   };
 
-  const loadDraft = async () => {
-    try {
-      const response = await fetch('/api/drafts?fileName=content_draft.json');
-      if (response.ok) {
-        const draftData = await response.json();
-        setTitle(draftData.title || '');
-        setContent(draftData.content || '');
-        setTags(draftData.tags || '');
-        setCategory(draftData.category || CATEGORIES[0]);
-        setUploadedImages(draftData.uploadedImages || []);
-        setPrivateMessage(draftData.privateMessage || '');
-        console.log('Draft loaded successfully!');
-      } else if (response.status === 404) {
-        // No draft found, do nothing
-        console.log('No draft found');
-      } else {
-        console.error('Failed to load draft');
-      }
-    } catch (error) {
-      console.error('Error loading draft:', error);
-    }
-  };
-
   const deleteDraft = async () => {
     try {
       const response = await fetch('/api/drafts?fileName=content_draft.json', {
@@ -166,12 +171,7 @@ export default function ContentForm({ post = null, onUpdate = null }: ContentFor
       });
       if (response.ok) {
         alert('Draft deleted successfully!');
-        setTitle('');
-        setContent('');
-        setTags('');
-        setCategory(CATEGORIES[0]);
-        setUploadedImages([]);
-        setPrivateMessage('');
+        resetForm();
       } else {
         alert('Failed to delete draft');
       }
@@ -184,7 +184,9 @@ export default function ContentForm({ post = null, onUpdate = null }: ContentFor
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label htmlFor="category" className="block mb-2">Category:</label>
+        <label htmlFor="category" className="block text-sm font-medium text-gray-700">
+          Category:
+        </label>
         <select
           id="category"
           value={category}
@@ -270,19 +272,31 @@ export default function ContentForm({ post = null, onUpdate = null }: ContentFor
           </ul>
         </div>
       )}
-      <div className="flex space-x-4">
-        <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+      <div className="flex justify-between mt-4">
+        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">
           {post ? 'Update Post' : 'Create Post'}
         </button>
         {!post && (
           <>
-            <button type="button" onClick={saveDraft} className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2">
+            <button
+              type="button"
+              onClick={saveDraft}
+              className="bg-green-500 text-white px-4 py-2 rounded-md mr-2"
+            >
               Save Draft
             </button>
-            <button type="button" onClick={loadDraft} className="bg-green-500 text-white px-4 py-2 rounded-md mr-2">
+            <button
+              type="button"
+              onClick={loadDraft}
+              className="bg-yellow-500 text-white px-4 py-2 rounded-md mr-2"
+            >
               Load Draft
             </button>
-            <button type="button" onClick={deleteDraft} className="bg-red-500 text-white px-4 py-2 rounded-md">
+            <button
+              type="button"
+              onClick={deleteDraft}
+              className="bg-red-500 text-white px-4 py-2 rounded-md"
+            >
               Delete Draft
             </button>
           </>
