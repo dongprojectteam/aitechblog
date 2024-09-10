@@ -1,11 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 
 const CATEGORIES = ['Generative AI'];
 
-export default function ContentForm({ post = null, onUpdate = null }) {
+interface ContentFormProps {
+  post: Post | null;
+  onUpdate: (() => void) | null;
+}
+
+export default function ContentForm({ post = null, onUpdate = null }: ContentFormProps) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [tags, setTags] = useState('');
@@ -13,7 +18,7 @@ export default function ContentForm({ post = null, onUpdate = null }) {
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const [privateMessage, setPrivateMessage] = useState('');
 
-  const router = useRouter();
+  // const router = useRouter();
 
   useEffect(() => {
     if (post) {
@@ -90,7 +95,7 @@ export default function ContentForm({ post = null, onUpdate = null }) {
         if (data.success) {
           const fullImageUrl = `${window.location.origin}${data.filepath}`;
           setUploadedImages(prev => [...prev, fullImageUrl]);
-          
+
           const imageMarkdown = `![${file.name}](${fullImageUrl})`;
           setContent(prevContent => prevContent + '\n\n' + imageMarkdown);
         }

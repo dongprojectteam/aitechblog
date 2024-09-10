@@ -7,8 +7,10 @@ import { FaEdit, FaBook, FaStar, FaTrash } from 'react-icons/fa';
 
 const REVIEWS_PER_PAGE = 10; // Adjust as needed
 
-export default function BookReviewList({ onReviewSelect }) {
-  const [reviews, setReviews] = useState([]);
+export default function BookReviewList({ onReviewSelect }: {
+  onReviewSelect: (review: BookReview) => void;
+}) {
+  const [reviews, setReviews] = useState<[] | BookReview[]>([]);
   const [totalPages, setTotalPages] = useState(1);
   const searchParams = useSearchParams();
   const currentPage = Number(searchParams.get('page')) || 1;

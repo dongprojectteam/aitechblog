@@ -2,7 +2,13 @@
 
 import Memo from './Memo'
 
-export default function MemoList({ memos, onUpdate, onDelete }) {
+interface MemoListProps {
+  memos: Memo[],
+  onUpdate: (id: string, content: string) => Promise<void>,
+  onDelete: (id: string) => Promise<void>
+}
+
+export default function MemoList({ memos, onUpdate, onDelete }: MemoListProps) {
   return (
     <div className="space-y-4">
       {memos.map((memo) => (

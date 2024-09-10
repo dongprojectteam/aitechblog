@@ -13,17 +13,17 @@ if (!ENCRYPTION_KEY) {
 
 // 메모 암호화 함수
 function encryptMemo(content: string): string {
-  return CryptoJS.AES.encrypt(content, ENCRYPTION_KEY).toString()
+  return CryptoJS.AES.encrypt(content, ENCRYPTION_KEY!).toString()
 }
 
 // 메모 복호화 함수
 function decryptMemo(encryptedContent: string): string {
-  const bytes = CryptoJS.AES.decrypt(encryptedContent, ENCRYPTION_KEY)
+  const bytes = CryptoJS.AES.decrypt(encryptedContent, ENCRYPTION_KEY!)
   return bytes.toString(CryptoJS.enc.Utf8)
 }
 
 // 암호화된 메모 가져오기
-function getEncryptedMemos() {
+function getEncryptedMemos() : Memo[] {
   if (!fs.existsSync(memosFile)) {
     return []
   }
@@ -47,7 +47,7 @@ export function createMemo(content: string) {
     content: encryptMemo(content),
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-  }
+  } as Memo
   memos.push(newMemo)
   fs.writeFileSync(memosFile, JSON.stringify(memos, null, 2))
   return {

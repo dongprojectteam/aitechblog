@@ -7,8 +7,10 @@ import { FaEdit, FaCalendarAlt, FaTrash } from 'react-icons/fa';
 
 const POSTS_PER_PAGE = 10; // 페이지당 포스트 수
 
-export default function ContentList({ onPostSelect }) {
-  const [posts, setPosts] = useState([]);
+export default function ContentList({ onPostSelect }: {
+  onPostSelect: (post: Post) => void;
+}) {
+  const [posts, setPosts] = useState<Post[] | []>([]);
   const [totalPages, setTotalPages] = useState(1);
   const searchParams = useSearchParams();
   const currentPage = Number(searchParams.get('page')) || 1;

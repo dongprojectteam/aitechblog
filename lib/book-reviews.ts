@@ -127,16 +127,7 @@ ${content}
 
 export function updateBookReview(
   fileName: string,
-  reviewData: {
-    title: string
-    author: string
-    rating: number
-    content: string
-    tags: string[]
-    uploadedImages: string[]
-    coverImage: string
-    date: string
-  }
+  reviewData: BookReview
 ) {
   const {
     title,

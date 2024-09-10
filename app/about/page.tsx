@@ -55,7 +55,7 @@ export default async function About() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold mb-6">About {aboutData.name}</h1>
-      
+
       <div className="flex flex-col md:flex-row items-center md:items-start mb-8">
         <Image
           src={aboutData.profileImage}
@@ -75,7 +75,7 @@ export default async function About() {
       ))}
 
       <p className="italic">
-        "{aboutData.quote.text}" - {aboutData.quote.author}
+        {`"${aboutData.quote.text}" - ${aboutData.quote.author}`}
       </p>
     </div>
   )

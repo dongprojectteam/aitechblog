@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { getBookReviewData, getSortedBookReviewsData } from '../../../lib/book-reviews'
+import { getBookReviewData, getSortedBookReviewsData } from '@/lib/book-reviews'
 
 const SURROUNDING_REVIEWS_COUNT = 2;
 const RECENT_REVIEWS_COUNT = 5;

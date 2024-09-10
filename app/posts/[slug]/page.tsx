@@ -34,7 +34,7 @@ export default async function Post({ params }: { params: { slug: string } }) {
         <span>{postData.author}</span> • <time>{postData.date}</time>
       </div>
       <div className="prose prose-lg max-w-none">
-        <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
+        <div dangerouslySetInnerHTML={{ __html: postData.contentHtml! }} />
       </div>
       <div className="mt-8 flex flex-wrap gap-2">
         {postData.tags.map(tag => (
@@ -45,32 +45,36 @@ export default async function Post({ params }: { params: { slug: string } }) {
       </div>
 
       {/* 주변 포스트 목록 */}
-      <div className="mt-12">
-        <h2 className="text-2xl font-bold mb-4">주변 포스트</h2>
-        <ul className="space-y-2">
-          {surroundingPosts.map(({ id, title }) => (
-            <li key={id}>
-              <Link href={`/posts/${id}`} className="text-blue-600 hover:underline">
-                {title}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {surroundingPosts && surroundingPosts.length > 0 && (
+        <div className="mt-12">
+          <h2 className="text-2xl font-bold mb-4">Posts</h2>
+          <ul className="space-y-2">
+            {surroundingPosts.map(({ id, title }) => (
+              <li key={id}>
+                <Link href={`/posts/${id}`} className="text-blue-600 hover:underline">
+                  {title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {/* 최신 포스트 목록 */}
-      <div className="mt-12">
-        <h2 className="text-2xl font-bold mb-4">최신 포스트</h2>
-        <ul className="space-y-2">
-          {recentPosts.map(({ id, title }) => (
-            <li key={id}>
-              <Link href={`/posts/${id}`} className="text-blue-600 hover:underline">
-                {title}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {recentPosts && recentPosts.length > 0 && (
+        <div className="mt-12">
+          <h2 className="text-2xl font-bold mb-4">Recent Posts</h2>
+          <ul className="space-y-2">
+            {recentPosts.map(({ id, title }) => (
+              <li key={id}>
+                <Link href={`/posts/${id}`} className="text-blue-600 hover:underline">
+                  {title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </article >
   )
 }

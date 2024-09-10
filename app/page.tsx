@@ -24,11 +24,11 @@ export default async function Home({ searchParams }: { searchParams: { page?: st
             <FaPencilAlt className="text-6xl text-blue-500 mb-6" />
             <h2 className="text-3xl font-bold text-gray-800 mb-4">No Posts Yet</h2>
             <p className="text-xl text-gray-600 mb-8">
-              We're working on creating amazing content for you. Check back soon!
+              {`We're working on creating amazing content for you. Check back soon!`}
             </p>
             <div className="w-16 h-1 bg-blue-500 rounded-full mb-8"></div>
             <p className="text-gray-500 italic">
-              "The best preparation for tomorrow is doing your best today." - H. Jackson Brown Jr.
+              {`"The best preparation for tomorrow is doing your best today." - H. Jackson Brown Jr.`}
             </p>
           </div>
         ) : (
@@ -70,7 +70,7 @@ export default async function Home({ searchParams }: { searchParams: { page?: st
               ))}
             </div>
             <div className="mt-12">
-              <Pagination currentPage={page} totalPages={totalPages} basePath="/" />
+              <Pagination currentPage={page} totalPages={totalPages} />
             </div>
           </>
         )}

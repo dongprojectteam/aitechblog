@@ -3,7 +3,12 @@
 import { useState, useEffect } from 'react'
 import { FaEdit, FaTrash, FaSave, FaTimes, FaClock, FaFont } from 'react-icons/fa'
 
-export default function Memo({ memo, onUpdate, onDelete }) {
+interface MemoProps {
+  memo: Memo,
+  onUpdate: (id: string, content: string) => Promise<void>,
+  onDelete: (id: string) => Promise<void>
+}
+export default function Memo({ memo, onUpdate, onDelete }: MemoProps) {
   const [isEditing, setIsEditing] = useState(false)
   const [content, setContent] = useState(memo.content)
   const [charCount, setCharCount] = useState(memo.content.length)
@@ -21,9 +26,15 @@ export default function Memo({ memo, onUpdate, onDelete }) {
     onDelete(memo.id)
   }
 
-  const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }
-    return new Date(dateString).toLocaleDateString(undefined, options)
+  const formatDate = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    };
+    return new Date(dateString).toLocaleDateString(undefined, options);
   }
 
   const CharCounter = () => (
@@ -37,6 +48,7 @@ export default function Memo({ memo, onUpdate, onDelete }) {
     return (
       <div className="bg-white shadow-lg rounded-lg p-6 mb-4 transition-all duration-300 ease-in-out hover:shadow-xl">
         <textarea
+          placeholder="Write Memo Here..."
           value={content}
           onChange={(e) => setContent(e.target.value)}
           className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"

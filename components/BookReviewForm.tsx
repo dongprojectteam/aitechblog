@@ -3,7 +3,12 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function BookReviewForm({ review = null, onUpdate = null }) {
+interface BookReviewForm {
+  review: BookReview | null;
+  onUpdate: (() => void) | null;
+}
+
+export default function BookReviewForm({ review = null, onUpdate = null }: BookReviewForm) {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [rating, setRating] = useState(5);

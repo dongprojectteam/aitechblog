@@ -3,10 +3,15 @@
 import { useState } from 'react'
 import { FaSearch, FaList } from 'react-icons/fa'
 
-export default function MemoSearch({ onSearch, onViewAll }) {
+interface MemoSearchProps {
+  onSearch: (term: string) => void,
+  onViewAll: () => void
+}
+
+export default function MemoSearch({ onSearch, onViewAll }: MemoSearchProps) {
   const [searchTerm, setSearchTerm] = useState('')
 
-  const handleSearch = (e) => {
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     onSearch(searchTerm)
   }

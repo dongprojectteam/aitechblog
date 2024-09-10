@@ -28,11 +28,11 @@ export default async function BookReviewsPage({
             <FaBook className="text-6xl text-purple-500 mb-6" />
             <h2 className="text-3xl font-bold text-gray-800 mb-4">Currently Reading</h2>
             <p className="text-xl text-gray-600 mb-8">
-              We're busy diving into some great books! Check back soon for reviews.
+              {`We're busy diving into some great books! Check back soon for reviews.`}
             </p>
             <div className="w-16 h-1 bg-purple-500 rounded-full mb-8"></div>
             <p className="text-gray-500 italic">
-              "A reader lives a thousand lives before he dies. The man who never reads lives only one." - George R.R. Martin
+              {`"A reader lives a thousand lives before he dies. The man who never reads lives only one." - George R.R. Martin`}
             </p>
           </div>
         ) : (
@@ -80,7 +80,7 @@ export default async function BookReviewsPage({
               ))}
             </div>
             <div className="mt-12">
-              <Pagination currentPage={page} totalPages={totalPages} basePath="/book-review" />
+              <Pagination currentPage={page} totalPages={totalPages} />
             </div>
           </>
         )}

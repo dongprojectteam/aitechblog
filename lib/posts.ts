@@ -17,16 +17,16 @@ if (!ENCRYPTION_KEY) {
 
 // 암호화 함수
 export function encrypt(text: string): string {
-  return CryptoJS.AES.encrypt(text, ENCRYPTION_KEY).toString()
+  return CryptoJS.AES.encrypt(text, ENCRYPTION_KEY!).toString()
 }
 
 // 복호화 함수
 export function decrypt(encryptedText: string): string {
-  const bytes = CryptoJS.AES.decrypt(encryptedText, ENCRYPTION_KEY)
+  const bytes = CryptoJS.AES.decrypt(encryptedText, ENCRYPTION_KEY!)
   return bytes.toString(CryptoJS.enc.Utf8)
 }
 
-export function getSortedPostsData() {
+export function getSortedPostsData(): Post[] {
   // Get file names under /posts
   const fileNames = fs.readdirSync(postsDirectory)
   const allPostsData = fileNames.map((fileName) => {
@@ -43,9 +43,9 @@ export function getSortedPostsData() {
     // Combine the data with the id
     return {
       id,
-      ...(matterResult.data as { date: string; title: string }),
-    }
-  })
+      ...(matterResult.data),
+    } 
+  }) as Post[]
   // Sort posts by date
   return allPostsData.sort((a, b) => {
     if (a.date < b.date) {
@@ -76,13 +76,21 @@ export async function getPostData(id: string) {
   }
 
   // Combine the data with the id and contentHtml
+
   return {
     id,
     contentHtml,
     content: matterResult.content,
-    ...(matterResult.data as { date: string; title: string }),
+    ...(matterResult.data) as {
+      title: string
+      date: string
+      tags: string[]
+      category: string
+      uploadedImages: string[]
+      author: string
+    },
     privateMessage,
-  }
+  } as Post
 }
 
 export function createPost(postData: {
@@ -142,15 +150,7 @@ ${content}
 
 export function updatePost(
   fileName: string,
-  postData: {
-    title: string
-    content: string
-    tags: string[]
-    date: string
-    category: string
-    uploadedImages: string[]
-    privateMessage?: string
-  }
+  postData: Post
 ) {
   const {
     title,

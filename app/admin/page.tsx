@@ -24,9 +24,11 @@ const TABS = {
 export default function AdminPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [activeTab, setActiveTab] = useState(TABS.CONTENT);
-  const [selectedPost, setSelectedPost] = useState(null);
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [selectedReview, setSelectedReview] = useState<BookReview | null>(null);
   const [isNewPost, setIsNewPost] = useState(false);
-  const [memos, setMemos] = useState([])
+  const [isNewReview, setIsNewReview] = useState(false);
+  const [memos, setMemos] = useState<[] | Memo[]>([])
 
   useEffect(() => {
     const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
@@ -51,22 +53,39 @@ export default function AdminPage() {
     setIsLoggedIn(false);
   };
 
-  const handlePostSelect = (post) => {
+  const handlePostSelect = (post: Post) => {
     setSelectedPost(post);
     setIsNewPost(false);
   };
 
+  
+  const handleReviewSelect = (review: BookReview) => {
+    setSelectedReview(review);
+    setIsNewReview(false);
+  };
+
+  
   const handleNewPost = () => {
     setSelectedPost(null);
     setIsNewPost(true);
   };
+
+  const handleNewReview = () => {
+    setSelectedReview(null);
+    setIsNewReview(true)
+  }
 
   const handlePostUpdate = () => {
     setSelectedPost(null);
     setIsNewPost(false);
   };
 
-  const handleSearch = (term) => {
+  const handleReviewUpdate = () => {
+    setSelectedReview(null);
+    setIsNewReview(false);
+  };
+
+  const handleSearch = (term: string) => {
     fetchMemos(term)
   }
 
@@ -87,7 +106,7 @@ export default function AdminPage() {
     }
   }
 
-  const addMemo = async (content) => {
+  const addMemo = async (content: string) => {
     try {
       const response = await fetch('/api/memos', {
         method: 'POST',
@@ -106,7 +125,7 @@ export default function AdminPage() {
     }
   }
 
-  const updateMemo = async (id, content) => {
+  const updateMemo = async (id: string, content: string) => {
     try {
       const response = await fetch(`/api/memos/${id}`, {
         method: 'PUT',
@@ -125,7 +144,7 @@ export default function AdminPage() {
     }
   }
 
-  const deleteMemo = async (id) => {
+  const deleteMemo = async (id: string) => {
     try {
       const response = await fetch(`/api/memos/${id}`, {
         method: 'DELETE',
@@ -158,18 +177,18 @@ export default function AdminPage() {
           );
         }
       case TABS.BOOK_REVIEW:
-        if (selectedPost || isNewPost) {
-          return <BookReviewForm review={selectedPost} onUpdate={handlePostUpdate} />;
+        if (selectedReview || isNewReview) {
+          return <BookReviewForm review={selectedReview} onUpdate={handleReviewUpdate} />;
         } else {
           return (
             <div>
               <button
-                onClick={handleNewPost}
+                onClick={handleNewReview}
                 className="mb-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
               >
                 New Review
               </button>
-              <BookReviewList onReviewSelect={handlePostSelect} />
+              <BookReviewList onReviewSelect={handleReviewSelect} />
             </div>
           );
         }

@@ -62,6 +62,8 @@ const Header = () => {
 
         {/* Mobile Menu Button */}
         <button
+          type="button"
+          title="about"
           className="md:hidden text-white focus:outline-none"
           onClick={toggleMenu}
         >
@@ -75,31 +77,21 @@ const Header = () => {
       {isMenuOpen && (
         <div className="md:hidden">
           <ul className="bg-gray-700 mt-2 py-2 px-4 space-y-2">
-            <li className="flex items-center space-x-2">
-              <Image
-                src="/images/profile.jpg" // 프로필 이미지 경로
-                alt="Author"
-                width={32}
-                height={32}
-                className="rounded-full border-2 border-white"
-              />
-              <span>Author Name</span>
+            <li>
+              <Link href="/" className="hover:text-gray-300">
+                AI News
+              </Link>
             </li>
             <li>
-            <Link href="/" className="hover:text-gray-300">
-              AI News
-            </Link>
-          </li>
-          <li>
-            <Link href="/book-review" className="hover:text-gray-300">
-              Review
-            </Link>
-          </li>
-          <li>
-            <Link href="/about" className="hover:text-gray-300">
-              About
-            </Link>
-          </li>
+              <Link href="/book-review" className="hover:text-gray-300">
+                Review
+              </Link>
+            </li>
+            <li>
+              <Link href="/about" className="hover:text-gray-300">
+                About
+              </Link>
+            </li>
           </ul>
         </div>
       )}

@@ -5,7 +5,11 @@ import { FaPaperPlane, FaTimes, FaFont, FaExclamationTriangle } from 'react-icon
 
 const MAX_CHARS = 1000 // 최대 글자 수 제한
 
-export default function MemoForm({ onMemoAdded }) {
+interface MemoFormProps {
+  onMemoAdded: (content: string) => Promise<void>
+}
+
+export default function MemoForm({ onMemoAdded }: MemoFormProps) {
   const [content, setContent] = useState('')
   const [charCount, setCharCount] = useState(0)
   const [showWarning, setShowWarning] = useState(false)
@@ -15,7 +19,7 @@ export default function MemoForm({ onMemoAdded }) {
     setShowWarning(content.length > MAX_CHARS)
   }, [content])
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (content.trim() && content.length <= MAX_CHARS) {
       await onMemoAdded(content)
@@ -23,7 +27,7 @@ export default function MemoForm({ onMemoAdded }) {
     }
   }
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newContent = e.target.value
     if (newContent.length <= MAX_CHARS) {
       setContent(newContent)
@@ -63,8 +67,8 @@ export default function MemoForm({ onMemoAdded }) {
           >
             <FaTimes className="mr-2" /> Clear
           </button>
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className={`btn ${content.trim() && content.length <= MAX_CHARS ? 'bg-blue-500 hover:bg-blue-600' : 'bg-gray-400 cursor-not-allowed'}`}
             disabled={!content.trim() || content.length > MAX_CHARS}
           >
