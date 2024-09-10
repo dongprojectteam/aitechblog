@@ -1,0 +1,34 @@
+{
+  "name": "Donghyuk Kim",
+  "title": "AI Researcher & Engineer specializing in Generative AI",
+  "profileImage": "/images/profile.jpg",
+  "introduction": "With a distinguished career at Samsung Electronics, I have been at the forefront of big data and AI technologies for many years. Since 2022, I have dedicated myself to the cutting-edge field of generative AI, focusing on the creation of innovative AI services and conducting in-depth research. My passion lies in pushing the boundaries of artificial intelligence, contributing to the development of transformative solutions that shape the future of technology.",
+  "sections": {
+    "Expertise": [
+      "Generative AI and Large Language Models",
+      "Natural Language Processing (NLP)",
+      "Computer Vision",
+      "Deep Learning and Neural Networks",
+      "Reinforcement Learning",
+      "AI Ethics and Responsible AI Development"
+    ],
+    "Professional Highlights": [
+      "Lead Generative AI at Samsung Electronics AI.Bigdata Lab",
+      "Handling petabyte-scale big data collected from televisions",
+      "Expertise in Web Applications and Server-Side Development."
+    ],
+    "Current Focus": {
+      "description": "My current research is centered on advancing generative AI technologies, with a particular emphasis on:",
+      "areas": [
+        "Improving the coherence and factual accuracy of large language models",
+        "Developing more efficient training methods for generative models",
+        "Exploring the intersection of generative AI and multimodal learning",
+        "Investigating ethical implications and safeguards in AI-generated content"
+      ]
+    }
+  },
+  "quote": {
+    "text": "The future is not something we enter. The future is something we create.",
+    "author": "Leonard I. Sweet"
+  }
+}
