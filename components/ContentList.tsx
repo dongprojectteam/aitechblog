@@ -82,6 +82,7 @@ export default function ContentList({ onPostSelect }: {
               </div>
               <div className="flex space-x-2">
                 <button
+                  type="button"
                   onClick={() => fetchPost(post.id)}
                   className="px-4 py-2 bg-blue-500 text-white rounded-lg transition-colors duration-300 hover:bg-blue-600 flex items-center"
                 >
@@ -89,6 +90,7 @@ export default function ContentList({ onPostSelect }: {
                   Edit
                 </button>
                 <button
+                  type="button"
                   onClick={() => deletePost(post.id)}
                   className="px-4 py-2 bg-red-500 text-white rounded-lg transition-colors duration-300 hover:bg-red-600 flex items-center"
                 >

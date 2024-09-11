@@ -43,8 +43,8 @@ export function getSortedPostsData(): Post[] {
     // Combine the data with the id
     return {
       id,
-      ...(matterResult.data),
-    } 
+      ...matterResult.data,
+    }
   }) as Post[]
   // Sort posts by date
   return allPostsData.sort((a, b) => {
@@ -81,14 +81,14 @@ export async function getPostData(id: string) {
     id,
     contentHtml,
     content: matterResult.content,
-    ...(matterResult.data) as {
+    ...(matterResult.data as {
       title: string
       date: string
       tags: string[]
       category: string
       uploadedImages: string[]
       author: string
-    },
+    }),
     privateMessage,
   } as Post
 }
@@ -148,10 +148,7 @@ ${content}
   return fileName
 }
 
-export function updatePost(
-  fileName: string,
-  postData: Post
-) {
+export function updatePost(fileName: string, postData: Post) {
   const {
     title,
     content,
@@ -201,4 +198,30 @@ export function deletePost(id: string) {
   } else {
     throw new Error('Post not found')
   }
+}
+
+export function getAllTags(): string[] {
+  const allPostsData = getSortedPostsData()
+  const tagsSet = new Set<string>()
+
+  allPostsData.forEach((post) => {
+    post.tags?.forEach((tag) => tagsSet.add(tag))
+  })
+
+  return Array.from(tagsSet)
+}
+
+export function getTagsWithCount(): { tag: string; count: number }[] {
+  const allPostsData = getSortedPostsData();
+  const tagCount: { [key: string]: number } = {};
+
+  allPostsData.forEach(post => {
+    post.tags?.forEach(tag => {
+      tagCount[tag] = (tagCount[tag] || 0) + 1;
+    });
+  });
+
+  return Object.entries(tagCount)
+    .map(([tag, count]) => ({ tag, count }))
+    .sort((a, b) => b.count - a.count); // 내림차순 정렬
 }

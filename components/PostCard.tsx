@@ -33,7 +33,7 @@ export default function PostCard({ post }: PostCardProps) {
             </span>
             <span className="flex items-center line-clamp-1">
               <FaCalendar className="mr-1" />
-              {date}
+              {new Date(date).toLocaleDateString()}
             </span>
           </div>
           {tags && tags.length > 0 && (

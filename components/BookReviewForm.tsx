@@ -177,6 +177,24 @@ export default function BookReviewForm({ review = null, onUpdate = null }: BookR
     }
   };
 
+  const deleteDraft = async () => {
+    try {
+      const response = await fetch('/api/drafts?fileName=book_review_draft.json', {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        alert('Draft deleted successfully!');
+        resetForm();
+      } else {
+        alert('Failed to delete draft');
+      }
+    } catch (error) {
+      console.error('Error deleting draft:', error);
+      alert('Error deleting draft');
+    }
+  };
+
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
@@ -285,6 +303,13 @@ export default function BookReviewForm({ review = null, onUpdate = null }: BookR
             </button>
             <button type="button" onClick={loadDraft} className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600">
               Load Draft
+            </button>
+            <button
+              type="button"
+              onClick={deleteDraft}
+              className="bg-red-500 text-white px-4 py-2 rounded-md"
+            >
+              Delete Draft
             </button>
           </>
         )}

@@ -3,11 +3,14 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 import ImageModal from './ImageModal'
+import SearchForm from './SearchForm'
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const pathname = usePathname()
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
@@ -21,6 +24,8 @@ const Header = () => {
     setIsModalOpen(false)
   }
 
+  const isHomePage = pathname === '/'
+
   return (
     <header className="bg-gray-800 text-white p-4">
       <nav className="container mx-auto flex justify-between items-center">
@@ -28,7 +33,7 @@ const Header = () => {
           {/* 프로필 이미지 */}
           <div onClick={openModal} className="cursor-pointer">
             <Image
-              src="/images/profile.jpg" // 프로필 이미지 경로
+              src="/images/profile.jpg"
               alt="Donghyuk Kim"
               width={40}
               height={40}
@@ -43,6 +48,11 @@ const Header = () => {
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex space-x-4 items-center">
+          {isHomePage && (
+            <li className="mr-4">
+              <SearchForm initialQuery="" />
+            </li>
+          )}
           <li>
             <Link href="/" className="hover:text-gray-300">
               AI
@@ -82,6 +92,11 @@ const Header = () => {
       {isMenuOpen && (
         <div className="md:hidden">
           <ul className="bg-gray-700 mt-2 py-2 px-4 space-y-2">
+            {isHomePage && (
+              <li className="mb-2">
+                <SearchForm initialQuery="" />
+              </li>
+            )}
             <li>
               <Link href="/" className="hover:text-gray-300">
                 AI
