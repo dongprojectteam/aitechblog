@@ -18,13 +18,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: 'https://www.doptsw.com/book-review',
       lastModified: new Date(),
       changeFrequency: 'monthly',
-      priority: 0.5,
+      priority: 0.8,
     },
     {
       url: 'https://www.doptsw.com/diff',
       lastModified: new Date(),
       changeFrequency: 'yearly',
-      priority: 0.2,
+      priority: 0.5,
+    },
+    {
+      url: 'https://www.doptsw.com/links',
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.5,
     },
   ]
 }

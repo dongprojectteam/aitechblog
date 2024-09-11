@@ -1,25 +1,54 @@
 {
   "aiSites": [
     {
-      "category": "Text Generation",
+      "category": "Multimodal AI",
       "sites": [
         {
+          "title": "GPT-4V",
+          "description": "OpenAI's multimodal model capable of processing both text and images",
+          "url": "https://openai.com/research/gpt-4v-system-card",
+          "imageUrl": "https://openai.com/favicon.ico"
+        },
+        {
+          "title": "ImageBind",
+          "description": "Meta AI's model that can understand and generate content across six modalities",
+          "url": "https://imagebind.metademolab.com/",
+          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Meta-Logo.png/800px-Meta-Logo.png"
+        },
+        {
+          "title": "Google Gemini",
+          "description": "Google's multimodal AI model capable of understanding and generating text, image, video, and audio",
+          "url": "https://deepmind.google/technologies/gemini/",
+          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Google_Gemini_logo.svg/344px-Google_Gemini_logo.svg.png"
+        },
+        {
+          "title": "Claude",
+          "description": "Anthropic's multimodal AI assistant capable of processing text, images, and documents",
+          "url": "https://www.anthropic.com",
+          "imageUrl": "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/claude-ai-icon.png"
+        },
+        {
+          "title": "Runway",
+          "description": "AI-powered creative suite for multimodal content creation including text, image, and video",
+          "url": "https://runwayml.com",
+          "imageUrl": "https://yt3.googleusercontent.com/j2SqOM2Fm9Lf5O6H6o_H-pB11O7RZrYn38eM-CzuF_sfKYop9K22Dfnzxivp8iYEYaexFpFA=s160-c-k-c0x00ffffff-no-rj"
+        },
+        {
           "title": "Perplexity",
-          "description": "AI-powered search engine for instant, accurate answers and information exploration.",
+          "description": "AI-powered search engine using multimodal processing for information exploration",
           "url": "https://www.perplexity.ai/",
           "imageUrl": "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/perplexity-ai-icon.png"
-        },
+        }
+      ]
+    },
+    {
+      "category": "Text Generation",
+      "sites": [
         {
           "title": "ChatGPT",
           "description": "Advanced language model for text generation and conversation",
           "url": "https://chat.openai.com",
           "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/512px-ChatGPT_logo.svg.png"
-        },
-        {
-          "title": "Claude",
-          "description": "AI assistant for various tasks including analysis, coding, and creative writing",
-          "url": "https://www.anthropic.com",
-          "imageUrl": "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/claude-ai-icon.png"
         },
         {
           "title": "Copy.ai",
@@ -80,12 +109,6 @@
           "imageUrl": "https://cdn.prod.website-files.com/65e89895c5a4b8d764c0d710/65eae689ace95f5017dc17a0_Logo-main.svg"
         },
         {
-          "title": "Runway",
-          "description": "AI-powered creative tools for video editing and generation",
-          "url": "https://runwayml.com",
-          "imageUrl": "https://yt3.googleusercontent.com/j2SqOM2Fm9Lf5O6H6o_H-pB11O7RZrYn38eM-CzuF_sfKYop9K22Dfnzxivp8iYEYaexFpFA=s160-c-k-c0x00ffffff-no-rj"
-        },
-        {
           "title": "DeepBrain AI",
           "description": "Create AI-powered videos with virtual humans",
           "url": "https://www.deepbrain.io",
@@ -95,7 +118,7 @@
           "title": "Kling",
           "description": "AI-powered video creation platform for personalized content",
           "url": "https://klingai.com/",
-          "imageUrl": "https://www.klingai.com/favicon.ico"
+          "imageUrl": "https://aivideotoolspro.com/images/links/1722810621.webp"
         },
         {
           "title": "Haiper",
@@ -118,7 +141,7 @@
           "title": "Boomy",
           "description": "Create and publish AI-generated music",
           "url": "https://boomy.com",
-          "imageUrl": "https://boomy.com/favicon.ico"
+          "imageUrl": "https://miro.medium.com/v2/resize:fit:960/1*xpSGmtnpDtrWdOCxdRc_sQ.png"
         }
       ]
     },
@@ -129,19 +152,19 @@
           "title": "GitHub Copilot",
           "description": "AI pair programmer that helps you write code faster",
           "url": "https://github.com/features/copilot",
-          "imageUrl": "https://github.com/favicon.ico"
+          "imageUrl": "https://seeklogo.com/images/G/github-copilot-logo-C25AFBDF08-seeklogo.com.png"
         },
         {
           "title": "Tabnine",
           "description": "AI code completion tool",
           "url": "https://www.tabnine.com",
-          "imageUrl": "https://www.tabnine.com/favicon.ico"
+          "imageUrl": "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/3e68dfde-d381-5b21-903a-6dc7c703e736/f546042b-814f-52fd-a042-625703195baf.jpg"
         },
         {
           "title": "CodeWhisperer",
           "description": "Amazon's AI-powered code companion",
           "url": "https://aws.amazon.com/codewhisperer",
-          "imageUrl": "https://aws.amazon.com/favicon.ico"
+          "imageUrl": "https://www.devoteam.com/wp-content/uploads/2024/02/Amazon-CodeWhisperer-logo.png"
         }
       ]
     },
@@ -152,19 +175,19 @@
           "title": "IBM Watson",
           "description": "AI-powered analytics and machine learning platform",
           "url": "https://www.ibm.com/watson",
-          "imageUrl": "https://www.ibm.com/favicon.ico"
+          "imageUrl": "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/a8266081-5622-5a77-9fca-36ca44524f56/01f285d4-046c-5352-832e-4e999c4e8fae.jpg"
         },
         {
           "title": "Google Cloud AI",
           "description": "Suite of machine learning tools and APIs",
           "url": "https://cloud.google.com/products/ai",
-          "imageUrl": "https://www.google.com/favicon.ico"
+          "imageUrl": "https://logowik.com/content/uploads/images/google-cloud.jpg"
         },
         {
           "title": "DataRobot",
           "description": "Automated machine learning platform",
           "url": "https://www.datarobot.com",
-          "imageUrl": "https://www.datarobot.com/favicon.ico"
+          "imageUrl": "https://acumenbi.co.nz/wp-content/uploads/2022/11/datarobot_stacked.png"
         }
       ]
     },
@@ -181,13 +204,36 @@
           "title": "Otter.ai",
           "description": "AI-powered transcription and note-taking",
           "url": "https://otter.ai",
-          "imageUrl": "https://otter.ai/favicon.ico"
+          "imageUrl": "https://public.otter.ai/media-kit/Otter%20Logos/Otter_Blue_Vertical.png"
         },
         {
           "title": "Speechmatics",
           "description": "Automatic speech recognition technology",
           "url": "https://www.speechmatics.com",
-          "imageUrl": "https://www.speechmatics.com/favicon.ico"
+          "imageUrl": "https://d3an9kf42ylj3p.cloudfront.net/uploads/2021/04/speechmatics-logo.jpg"
+        },
+        {
+          "title": "ElevenLabs",
+          "description": "AI-powered platform for realistic speech synthesis and voice cloning",
+          "url": "https://elevenlabs.io",
+          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/9/99/Eleven_Labs.png"
+        },
+        {
+          "title": "Reka AI",
+          "description": "AI-driven voice synthesis and audio generation platform",
+          "url": "https://reka.ai",
+          "imageUrl": "https://images.squarespace-cdn.com/content/v1/66ab79c1fd8e9e59980a8536/1722513874552-SFLFUMLR47FUO3WVZMGK/reka-logo-flat+dark.png"
+        }
+      ]
+    },
+    {
+      "category": "Video Analysis",
+      "sites": [
+        {
+          "title": "12Labs",
+          "description": "AI-powered video understanding and analysis platform",
+          "url": "https://www.12labs.io",
+          "imageUrl": "https://media.licdn.com/dms/image/v2/C560BAQFTRB7OXHD3MA/company-logo_200_200/company-logo_200_200/0/1645681065489/twelvelabs_logo?e=2147483647&t=oOaMcSt1Weka8SLxT-i30AYfcJasYpV2-xst2JngQls&v=beta"
         }
       ]
     }
