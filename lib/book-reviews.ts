@@ -23,6 +23,7 @@ export async function getSortedBookReviewsData() {
           title: string
           author: string
           rating: number
+          tags: string[]
           coverImage: string
         }),
       }

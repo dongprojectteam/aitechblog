@@ -19,8 +19,8 @@ export default async function BookReviewsPage({
   const filteredReviews = allBookReviews.filter((review) =>
     searchQuery
       ? review.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        review.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        review.tags?.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+      review.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      review.tags?.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()))
       : true
   );
 
@@ -45,6 +45,7 @@ export default async function BookReviewsPage({
               className="flex-grow px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
             <button
+              title="Search"
               type="submit"
               className="px-4 py-2 bg-purple-500 text-white rounded-r-md hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
@@ -114,10 +115,9 @@ export default async function BookReviewsPage({
               ))}
             </div>
             <div className="mt-12">
-              <Pagination 
-                currentPage={page} 
-                totalPages={totalPages} 
-                baseUrl={`/book-review${searchQuery ? `?q=${encodeURIComponent(searchQuery)}&` : '?'}`}
+              <Pagination
+                currentPage={page}
+                totalPages={totalPages}
               />
             </div>
           </>
