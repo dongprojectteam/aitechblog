@@ -37,7 +37,7 @@ export default async function BookReview({ params }: { params: { slug: string } 
                 Next: {nextReview.title} →
               </Link>
             )}
-            <Link href="/book-reviews" className="block text-blue-600 hover:underline">
+            <Link href="/book-review" className="block text-blue-600 hover:underline">
               ← Back to Reviews
             </Link>
           </div>
