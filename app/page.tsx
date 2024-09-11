@@ -1,6 +1,6 @@
 import { getSortedPostsData, getTagsWithCount } from '@/lib/posts'
 import Pagination from '@/components/Pagination'
-import PostCard from '@/components/PostCard'
+import PostListItem from '@/components/PostListItem'
 import NoPostsFound from '@/components/NoPostsFound'
 import Link from 'next/link'
 
@@ -32,9 +32,9 @@ export default async function Home({ searchParams }: { searchParams: { page?: st
 
   return (
     <div className="bg-gray-100 min-h-screen">
-      <div className="max-w-6xl mx-auto px-4 py-12">
-        <div className="mt-8 mb-4">
-          <h2 className="text-xl font-semibold mb-2">Tags:</h2>
+      <div className="max-w-4xl mx-auto px-4 py-12">
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold mb-4">Tags:</h2>
           <div className="flex flex-wrap gap-2">
             {selectedTag && (
               <Link
@@ -62,11 +62,13 @@ export default async function Home({ searchParams }: { searchParams: { page?: st
           <NoPostsFound searchQuery={searchQuery} />
         ) : (
           <>
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-2 mt-8">
+            <ul className="divide-y divide-gray-200">
               {paginatedPosts.map((post) => (
-                <PostCard key={post.id} post={post} />
+                <li key={post.id} className="py-4">
+                  <PostListItem post={post} />
+                </li>
               ))}
-            </div>
+            </ul>
             <div className="mt-12">
               <Pagination currentPage={page} totalPages={totalPages} />
             </div>

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getSortedBookReviewsData } from '@/lib/book-reviews';
 import Pagination from '@/components/Pagination';
-import { FaStar, FaCalendar, FaUser, FaBook, FaSearch } from 'react-icons/fa';
+import { FaStar, FaCalendar, FaUser, FaBook } from 'react-icons/fa';
 
 const ITEMS_PER_PAGE = 9;
 
@@ -32,28 +32,8 @@ export default async function BookReviewsPage({
   );
 
   return (
-    <div className="bg-gray-100 min-h-screen py-12">
-      <div className="max-w-6xl mx-auto px-4">
-        {/* 검색 폼 추가 */}
-        <form className="mb-8" action="/book-review" method="GET">
-          <div className="flex">
-            <input
-              type="text"
-              name="q"
-              defaultValue={searchQuery}
-              placeholder="Search book reviews..."
-              className="flex-grow px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-            />
-            <button
-              title="Search"
-              type="submit"
-              className="px-4 py-2 bg-purple-500 text-white rounded-r-md hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
-            >
-              <FaSearch />
-            </button>
-          </div>
-        </form>
-
+    <div className="bg-gray-100 min-h-screen">
+      <div className="max-w-4xl mx-auto px-4 py-12">
         {filteredReviews.length === 0 ? (
           <div className="flex flex-col items-center justify-center bg-white shadow-lg rounded-xl p-12 text-center">
             <FaBook className="text-6xl text-purple-500 mb-6" />
