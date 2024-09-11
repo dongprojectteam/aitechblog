@@ -45,7 +45,7 @@ const Header = () => {
         <ul className="hidden md:flex space-x-4 items-center">
           <li>
             <Link href="/" className="hover:text-gray-300">
-              AI News
+              AI
             </Link>
           </li>
           <li>
@@ -84,7 +84,7 @@ const Header = () => {
           <ul className="bg-gray-700 mt-2 py-2 px-4 space-y-2">
             <li>
               <Link href="/" className="hover:text-gray-300">
-                AI News
+                AI
               </Link>
             </li>
             <li>
