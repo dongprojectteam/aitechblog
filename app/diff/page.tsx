@@ -9,7 +9,7 @@ export default function Home(): JSX.Element {
   const [diffType, setDiffType] = useState<'words' | 'lines'>('words');
 
   return (
-    <div className="max-w-6xl mx-auto p-8 bg-gray-50 rounded-lg shadow-md">
+    <div className="max-w-6xl mx-auto p-8 bg-gray-50 rounded-lg shadow-md mt-8">
       <h1 className="text-4xl font-bold text-center text-gray-800 mb-6">
         Document Difference Checker
       </h1>
