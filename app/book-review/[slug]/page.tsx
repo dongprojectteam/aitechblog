@@ -14,15 +14,8 @@ export default async function BookReview({ params }: { params: { slug: string } 
     <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col lg:flex-row">
       {/* 사이드바 (PC 화면) */}
       <aside className="lg:w-1/4 lg:pr-8 mb-8 lg:mb-0 bg-gray-50 p-6 rounded-lg shadow-md">
-        <div className="flex flex-col mb-4">
-          <span className="text-gray-800">{reviewData.author}</span>
-          <div className="flex items-center">
-            <span className="text-yellow-500 mr-1">★</span>
-            <span>{reviewData.rating.toFixed(1)}</span>
-          </div>
-        </div>
         <div className="mb-4">
-          <hr className="my-2 border-gray-300" />
+
           <div className="flex flex-wrap gap-2 mb-8">
             {reviewData.tags.map(tag => (
               <span key={tag} className="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">
