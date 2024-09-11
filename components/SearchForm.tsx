@@ -1,16 +1,26 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 import { FaSearch } from 'react-icons/fa'
 
-export default function SearchForm({ initialQuery }: { initialQuery: string }) {
+export default function SearchForm({ initialQuery, currentPath }: { initialQuery: string, currentPath: string }) {
   const [query, setQuery] = useState(initialQuery);
   const router = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    // 경로가 변경될 때 쿼리 초기화
+    setQuery('');
+  }, [pathname]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    router.push(`/?q=${encodeURIComponent(query)}`);
+    if (currentPath === '/book-review') {
+      router.push(`/book-review?q=${encodeURIComponent(query)}`);
+    } else {
+      router.push(`/?q=${encodeURIComponent(query)}`);
+    }
   };
 
   return (

@@ -1,21 +1,32 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { getSortedBookReviewsData } from '../../lib/book-reviews';
-import Pagination from '../../components/Pagination';
-import { FaStar, FaCalendar, FaUser, FaBook } from 'react-icons/fa';
+import { getSortedBookReviewsData } from '@/lib/book-reviews';
+import Pagination from '@/components/Pagination';
+import { FaStar, FaCalendar, FaUser, FaBook, FaSearch } from 'react-icons/fa';
 
 const ITEMS_PER_PAGE = 9;
 
 export default async function BookReviewsPage({
   searchParams,
 }: {
-  searchParams: { page: string };
+  searchParams: { page: string; q?: string };
 }) {
   const allBookReviews = await getSortedBookReviewsData();
   const page = parseInt(searchParams.page || '1', 10);
-  const totalPages = Math.ceil(allBookReviews.length / ITEMS_PER_PAGE);
+  const searchQuery = searchParams.q || '';
 
-  const bookReviews = allBookReviews.slice(
+  // 검색 쿼리에 따라 책 리뷰 필터링
+  const filteredReviews = allBookReviews.filter((review) =>
+    searchQuery
+      ? review.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        review.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        review.tags?.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+      : true
+  );
+
+  const totalPages = Math.ceil(filteredReviews.length / ITEMS_PER_PAGE);
+
+  const bookReviews = filteredReviews.slice(
     (page - 1) * ITEMS_PER_PAGE,
     page * ITEMS_PER_PAGE
   );
@@ -23,12 +34,35 @@ export default async function BookReviewsPage({
   return (
     <div className="bg-gray-100 min-h-screen py-12">
       <div className="max-w-6xl mx-auto px-4">
-        {allBookReviews.length === 0 ? (
+        {/* 검색 폼 추가 */}
+        <form className="mb-8" action="/book-review" method="GET">
+          <div className="flex">
+            <input
+              type="text"
+              name="q"
+              defaultValue={searchQuery}
+              placeholder="Search book reviews..."
+              className="flex-grow px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+            <button
+              type="submit"
+              className="px-4 py-2 bg-purple-500 text-white rounded-r-md hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            >
+              <FaSearch />
+            </button>
+          </div>
+        </form>
+
+        {filteredReviews.length === 0 ? (
           <div className="flex flex-col items-center justify-center bg-white shadow-lg rounded-xl p-12 text-center">
             <FaBook className="text-6xl text-purple-500 mb-6" />
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">Currently Reading</h2>
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">
+              {searchQuery ? 'No Reviews Found' : 'Currently Reading'}
+            </h2>
             <p className="text-xl text-gray-600 mb-8">
-              {`We're busy diving into some great books! Check back soon for reviews.`}
+              {searchQuery
+                ? `We couldn't find any reviews matching "${searchQuery}". Try a different search term.`
+                : `We're busy diving into some great books! Check back soon for reviews.`}
             </p>
             <div className="w-16 h-1 bg-purple-500 rounded-full mb-8"></div>
             <p className="text-gray-500 italic">
@@ -80,7 +114,11 @@ export default async function BookReviewsPage({
               ))}
             </div>
             <div className="mt-12">
-              <Pagination currentPage={page} totalPages={totalPages} />
+              <Pagination 
+                currentPage={page} 
+                totalPages={totalPages} 
+                baseUrl={`/book-review${searchQuery ? `?q=${encodeURIComponent(searchQuery)}&` : '?'}`}
+              />
             </div>
           </>
         )}

@@ -24,7 +24,7 @@ const Header = () => {
     setIsModalOpen(false)
   }
 
-  const isHomePage = pathname === '/'
+  const showSearch = pathname === '/' || pathname === '/book-review'
 
   return (
     <header className="bg-gray-800 text-white p-4">
@@ -48,9 +48,9 @@ const Header = () => {
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex space-x-4 items-center">
-          {isHomePage && (
+          {showSearch && (
             <li className="mr-4">
-              <SearchForm initialQuery="" />
+              <SearchForm initialQuery="" currentPath={pathname} />
             </li>
           )}
           <li>
@@ -92,9 +92,9 @@ const Header = () => {
       {isMenuOpen && (
         <div className="md:hidden">
           <ul className="bg-gray-700 mt-2 py-2 px-4 space-y-2">
-            {isHomePage && (
+            {showSearch && (
               <li className="mb-2">
-                <SearchForm initialQuery="" />
+                <SearchForm initialQuery="" currentPath={pathname} />
               </li>
             )}
             <li>
