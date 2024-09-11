@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 
 interface BookReviewForm {
   review: BookReview | null;
@@ -16,7 +15,7 @@ export default function BookReviewForm({ review = null, onUpdate = null }: BookR
   const [tags, setTags] = useState('');
   const [coverImage, setCoverImage] = useState('');
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
-  const router = useRouter();
+
 
   // Load review data if it's provided (for editing)
   useEffect(() => {
@@ -74,7 +73,7 @@ export default function BookReviewForm({ review = null, onUpdate = null }: BookR
         onUpdate(); // Notify parent component to refresh the list
       } else {
         resetForm(); // Clear the form if it's a new review
-        router.refresh(); // Refresh the page after creating a new review
+        // router.refresh(); // Refresh the page after creating a new review
       }
     } else {
       alert(review ? 'Failed to update book review' : 'Failed to create book review');
@@ -166,15 +165,15 @@ export default function BookReviewForm({ review = null, onUpdate = null }: BookR
         setTags(draftData.tags || '');
         setCoverImage(draftData.coverImage);
         setUploadedImages(draftData.uploadedImages || []);
-        alert('Draft loaded successfully!');
+        console.log('Draft loaded successfully!');
       } else if (response.status === 404) {
         // No draft found, do nothing
       } else {
-        alert('Failed to load draft');
+        console.log('Failed to load draft');
       }
     } catch (error) {
       console.error('Error loading draft:', error);
-      alert('Error loading draft');
+      console.log('Error loading draft');
     }
   };
 

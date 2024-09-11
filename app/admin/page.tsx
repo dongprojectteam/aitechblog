@@ -58,13 +58,13 @@ export default function AdminPage() {
     setIsNewPost(false);
   };
 
-  
+
   const handleReviewSelect = (review: BookReview) => {
     setSelectedReview(review);
     setIsNewReview(false);
   };
 
-  
+
   const handleNewPost = () => {
     setSelectedPost(null);
     setIsNewPost(true);
@@ -167,6 +167,7 @@ export default function AdminPage() {
           return (
             <div>
               <button
+                type="button"
                 onClick={handleNewPost}
                 className="mb-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
               >
@@ -183,6 +184,7 @@ export default function AdminPage() {
           return (
             <div>
               <button
+                type="button"
                 onClick={handleNewReview}
                 className="mb-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
               >
@@ -228,14 +230,16 @@ export default function AdminPage() {
             isActive={activeTab === TABS.CONTENT}
             onClick={() => {
               setActiveTab(TABS.CONTENT);
-              setSelectedPost(null);
-              setIsNewPost(false);
+              handlePostUpdate()
             }}
             label="Content"
           />
           <TabButton
             isActive={activeTab === TABS.BOOK_REVIEW}
-            onClick={() => setActiveTab(TABS.BOOK_REVIEW)}
+            onClick={() => {
+              setActiveTab(TABS.BOOK_REVIEW)
+              handleReviewUpdate()
+            }}
             label="Book Review"
           />
 
