@@ -65,7 +65,7 @@ const Header = () => {
           </li>
           <li>
             <Link href="/diff" className="hover:text-gray-300">
-              Doc.Diff
+              DocDiff
             </Link>
           </li>
           <li>
@@ -114,7 +114,7 @@ const Header = () => {
             </li>
             <li>
               <Link href="/diff" className="hover:text-gray-300">
-                Diff Util
+                DocDiff
               </Link>
             </li>
             <li>

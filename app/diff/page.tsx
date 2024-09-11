@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import DiffViewer from '@/components/DiffViewer';
 
-export default function Home(): JSX.Element {
+export default function Diff() {
   const [text1, setText1] = useState<string>('');
   const [text2, setText2] = useState<string>('');
   const [diffType, setDiffType] = useState<'words' | 'lines'>('words');
