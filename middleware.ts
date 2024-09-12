@@ -1,8 +1,12 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import fs from 'fs';
 
 export async function middleware(request: NextRequest) {
   console.log(`Middleware executed for: ${request.nextUrl.pathname}`);
+
+  const logMessage = `Middleware executed for: ${request.nextUrl.pathname}\n`;
+  fs.appendFileSync('/home/ubuntu/log.txt', logMessage);
 
   const url = request.nextUrl.pathname;
 
@@ -14,7 +18,6 @@ export async function middleware(request: NextRequest) {
   console.log(`Middleware apiUrl: ${apiUrl}`);
 
   try {
-    // 비동기 처리 await 추가
     await fetch(apiUrl, {
       method: 'POST',
       headers: {
@@ -22,8 +25,12 @@ export async function middleware(request: NextRequest) {
       },
       body: JSON.stringify({ url }),
     });
+    console.log(`Visit logged for: ${url}`);
   } catch (error) {
     console.error('Error logging visit:', error);
+    if (error instanceof Error) {
+      console.error('Error details:', error.message);
+    }
   }
 
   return NextResponse.next();
