@@ -1,6 +1,6 @@
 const getBaseUrl = () => {
   if (typeof window !== 'undefined') return ''; // 브라우저 환경
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // Vercel 배포 환경
+  if (process.env.BASE_URL) return process.env.BASE_URL; // 서버 환경
   return `http://localhost:${process.env.PORT || 3000}`; // 개발 환경
 }
 
