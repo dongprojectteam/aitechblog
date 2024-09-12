@@ -9,8 +9,14 @@ interface VisitData {
 export async function POST(request: Request) {
   const { url } = await request.json();
 
+  console.log("log-visit requested")
+  console.log(url)
+
   const logDir = path.join(process.cwd(), 'data');
   const logFile = path.join(logDir, 'visits.json');
+
+  console.log(logDir)
+  console.log(logFile)
 
   let visitData: VisitData = {};
 
