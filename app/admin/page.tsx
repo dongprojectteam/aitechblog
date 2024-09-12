@@ -6,14 +6,10 @@ import ContentForm from '@/components/ContentForm';
 import ContentList from '@/components/ContentList';
 import BookReviewForm from '@/components/BookReviewForm';
 import BookReviewList from '@/components/BookReviewList';
-import MemoList from '@/components/MemoList';
-import MemoForm from '@/components/MemoForm';
-import MemoSearch from '@/components/MemoSearch';
-import StatsForm from '@/components/StatsForm';
-
-interface VisitStats {
-  [page: string]: number;
-}
+import MemoList from '@/components/MemoList'
+import MemoForm from '@/components/MemoForm'
+import MemoSearch from '@/components/MemoSearch'
+import StatsView from '@/components/StatsView';
 
 const ADMIN_CREDENTIALS = {
   username: process.env.NEXT_PUBLIC_ADMIN_USERNAME,
@@ -24,7 +20,7 @@ const TABS = {
   CONTENT: 'content',
   BOOK_REVIEW: 'bookReview',
   MEMO: 'memo',
-  STATS: 'stats'
+  STATS: 'stats'  // 새로운 탭 추가
 };
 
 export default function AdminPage() {
@@ -34,10 +30,7 @@ export default function AdminPage() {
   const [selectedReview, setSelectedReview] = useState<BookReview | null>(null);
   const [isNewPost, setIsNewPost] = useState(false);
   const [isNewReview, setIsNewReview] = useState(false);
-  const [memos, setMemos] = useState<Memo[]>([]);
-  const [stats, setStats] = useState<VisitStats | null>(null);
-  const [isStatsLoading, setIsStatsLoading] = useState(false);
-  const [statsError, setStatsError] = useState<string | null>(null);
+  const [memos, setMemos] = useState<[] | Memo[]>([])
 
   useEffect(() => {
     const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
@@ -167,27 +160,6 @@ export default function AdminPage() {
     }
   }
 
-  const fetchStats = async () => {
-    setIsStatsLoading(true);
-    setStatsError(null);
-    try {
-      const response = await fetch('/api/getVisits', { cache: 'no-store' });
-      if (!response.ok) {
-        throw new Error('Failed to fetch stats');
-      }
-      const data = await response.json();
-      if (data.success) {
-        setStats(data.visits);
-      } else {
-        throw new Error(data.error || 'Unknown error occurred');
-      }
-    } catch (err) {
-      setStatsError(err instanceof Error ? err.message : 'An error occurred');
-    } finally {
-      setIsStatsLoading(false);
-    }
-  };
-
   const renderTabContent = () => {
     switch (activeTab) {
       case TABS.CONTENT:
@@ -234,14 +206,7 @@ export default function AdminPage() {
           </main>
         )
       case TABS.STATS:
-        return (
-          <StatsForm
-            stats={stats}
-            isLoading={isStatsLoading}
-            error={statsError}
-            onRefresh={fetchStats}
-          />
-        );
+        return <StatsView />;
       default:
         return null;
     }
