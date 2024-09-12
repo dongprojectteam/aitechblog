@@ -1,12 +1,17 @@
 'use client';
 
-import { useState } from 'react';
 import DiffViewer from '@/components/DiffViewer';
+import { useEffect, useState } from 'react';
+import { incrementVisits } from '@/lib/incrementVisits';
 
 export default function Diff() {
   const [text1, setText1] = useState<string>('');
   const [text2, setText2] = useState<string>('');
   const [diffType, setDiffType] = useState<'words' | 'lines'>('words');
+
+  useEffect(() => {
+    incrementVisits('/diff')
+  }, []);
 
   return (
     <div className="max-w-6xl mx-auto p-8 bg-gray-50 rounded-lg shadow-md mt-8">

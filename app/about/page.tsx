@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import fs from 'fs'
 import path from 'path'
+import { incrementVisits } from '@/lib/incrementVisits';
 
 type AboutData = {
   name: string
@@ -51,6 +52,7 @@ function Section({ title, content }: { title: string; content: string[] | { desc
 
 export default async function About() {
   const aboutData = await getAboutData()
+  await incrementVisits('/about');
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">

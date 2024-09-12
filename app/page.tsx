@@ -3,6 +3,8 @@ import Pagination from '@/components/Pagination'
 import PostListItem from '@/components/PostListItem'
 import NoPostsFound from '@/components/NoPostsFound'
 import Link from 'next/link'
+import { incrementVisits } from '@/lib/incrementVisits';
+
 
 const POSTS_PER_PAGE = 20
 
@@ -12,6 +14,8 @@ export default async function Home({ searchParams }: { searchParams: { page?: st
   const page = parseInt(searchParams.page || '1')
   const searchQuery = searchParams.q || ''
   const selectedTag = searchParams.tag || ''
+
+  await incrementVisits('/');
 
   const filteredPosts = allPostsData.filter(post =>
     (searchQuery ? (
