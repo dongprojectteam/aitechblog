@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getPostData, getSortedPostsData } from '@/lib/posts'
+import { incrementVisits } from '@/lib/incrementVisits';
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const post = await getPostData(params.slug)
@@ -16,6 +17,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 export default async function Post({ params }: { params: { slug: string } }) {
+  await incrementVisits(`/posts/${params.slug}`);
+
   const postData = await getPostData(params.slug)
   const allPostsData = await getSortedPostsData()
 

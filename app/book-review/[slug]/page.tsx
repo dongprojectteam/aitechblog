@@ -1,8 +1,12 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { getBookReviewData, getSortedBookReviewsData } from '@/lib/book-reviews'
+import { incrementVisits } from '@/lib/incrementVisits';
 
 export default async function BookReview({ params }: { params: { slug: string } }) {
+  await incrementVisits(`/posts/${params.slug}`);
+
+
   const reviewData = await getBookReviewData(params.slug)
   const allReviewsData = await getSortedBookReviewsData()
 

@@ -11,6 +11,7 @@ export default async function BookReviewsPage({
 }: {
   searchParams: { page: string; q?: string };
 }) {
+  
   const allBookReviews = await getSortedBookReviewsData();
   const page = parseInt(searchParams.page || '1', 10);
   const searchQuery = searchParams.q || '';

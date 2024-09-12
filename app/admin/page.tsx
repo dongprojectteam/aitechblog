@@ -9,6 +9,7 @@ import BookReviewList from '@/components/BookReviewList';
 import MemoList from '@/components/MemoList'
 import MemoForm from '@/components/MemoForm'
 import MemoSearch from '@/components/MemoSearch'
+import StatsView from '@/components/StatsView';
 
 const ADMIN_CREDENTIALS = {
   username: process.env.NEXT_PUBLIC_ADMIN_USERNAME,
@@ -18,7 +19,8 @@ const ADMIN_CREDENTIALS = {
 const TABS = {
   CONTENT: 'content',
   BOOK_REVIEW: 'bookReview',
-  MEMO: 'memo'
+  MEMO: 'memo',
+  STATS: 'stats'  // 새로운 탭 추가
 };
 
 export default function AdminPage() {
@@ -203,6 +205,8 @@ export default function AdminPage() {
             <MemoList memos={memos} onUpdate={updateMemo} onDelete={deleteMemo} />
           </main>
         )
+      case TABS.STATS:
+        return <StatsView />;
       default:
         return null;
     }
@@ -247,6 +251,11 @@ export default function AdminPage() {
             isActive={activeTab === TABS.MEMO}
             onClick={() => setActiveTab(TABS.MEMO)}
             label="Memo"
+          />
+          <TabButton
+            isActive={activeTab === TABS.STATS}
+            onClick={() => setActiveTab(TABS.STATS)}
+            label="Statistics"
           />
         </nav>
       </div>
