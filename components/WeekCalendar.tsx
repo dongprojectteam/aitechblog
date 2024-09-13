@@ -41,6 +41,28 @@ const MonthCalendar: React.FC = () => {
     return `${lunar.getMonth()}.${lunar.getDay()}`;
   };
 
+  const isHoliday = (date: Date) : string | null => {
+    const solarDate = format(date, 'MM-dd');
+    const lunarDate = getLunarDate(date);
+    
+    const holidays : Record<string, string> = {
+      '01-01': 'Happy New Year',
+      '03-01': '삼일절',
+      '05-05': '어린이날',
+      '06-06': '현충일',
+      '08-15': '광복절',
+      '10-03': '개천절',
+      '10-09': '한글날',
+      '12-25': 'Happy Holiday',
+    };
+
+    if (lunarDate === '4.8') {
+      return '석가탄신일';
+    }
+
+    return holidays[solarDate] || null;
+  };
+
   useEffect(() => {
     const checkLeapMonth = () => {
       for (const week of weeks) {
@@ -170,11 +192,11 @@ const MonthCalendar: React.FC = () => {
           </div>
           {week.map((day, dayIndex) => {
             const isCurrentMonth = isSameMonth(day, currentDate);
-            const isHoliday = format(day, 'MM-dd') === '12-25'; // 12월 25일을 휴일로 설정
+            const holidayName = isHoliday(day);
             const dayClass =
               !isCurrentMonth ? 'text-gray-400' :
-                isHoliday || isSunday(day) ? 'bg-red-100 text-red-800' : // 일요일 및 12월 25일
-                  isSaturday(day) ? 'bg-blue-100 text-blue-800' : // 토요일
+                holidayName || isSunday(day) ? 'bg-red-100 text-red-800' :
+                  isSaturday(day) ? 'bg-blue-100 text-blue-800' :
                     'bg-white text-gray-800';
 
             return (
@@ -184,6 +206,9 @@ const MonthCalendar: React.FC = () => {
               >
                 <div className="text-lg font-semibold">{format(day, 'd')}</div>
                 <div className="text-xs text-gray-500 mt-1">{getLunarDate(day)}</div>
+                {holidayName && (
+                  <div className="text-xs text-red-600 mt-1">{holidayName}</div>
+                )}
               </div>
             );
           })}
