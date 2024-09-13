@@ -27,6 +27,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.5,
     },
     {
+      url: 'https://www.doptsw.com/week-calendar',
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
+    {
       url: 'https://www.doptsw.com/links',
       lastModified: new Date(),
       changeFrequency: 'yearly',

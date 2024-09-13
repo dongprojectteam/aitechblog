@@ -10,10 +10,15 @@ import SearchForm from './SearchForm'
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isUtilityOpen, setIsUtilityOpen] = useState(false)
   const pathname = usePathname()
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
+  }
+
+  const toggleUtility = () => {
+    setIsUtilityOpen(!isUtilityOpen)
   }
 
   const openModal = () => {
@@ -30,7 +35,6 @@ const Header = () => {
     <header className="bg-gray-800 text-white p-4">
       <nav className="container mx-auto flex justify-between items-center">
         <div className="flex items-center space-x-4">
-          {/* 프로필 이미지 */}
           <div onClick={openModal} className="cursor-pointer">
             <Image
               src="/images/profile.jpg"
@@ -40,7 +44,6 @@ const Header = () => {
               className="rounded-full border-2 border-white"
             />
           </div>
-          {/* 블로그 타이틀 */}
           <Link href="/" className="text-2xl font-bold">
             AI Tech Blog
           </Link>
@@ -63,10 +66,24 @@ const Header = () => {
               Review
             </Link>
           </li>
-          <li>
-            <Link href="/diff" className="hover:text-gray-300">
-              DocDiff
-            </Link>
+          <li className="relative">
+            <button onClick={toggleUtility} className="hover:text-gray-300">
+              Utility
+            </button>
+            {isUtilityOpen && (
+              <ul className="absolute left-0 mt-2 w-48 bg-gray-700 rounded-md shadow-lg py-1 z-10">
+                <li>
+                  <Link href="/diff" className="block px-4 py-2 text-sm hover:bg-gray-600">
+                    DocDiff
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/week-calendar" className="block px-4 py-2 text-sm hover:bg-gray-600">
+                    Week Calendar
+                  </Link>
+                </li>
+              </ul>
+            )}
           </li>
           <li>
             <Link href="/links" className="hover:text-gray-300">
@@ -113,9 +130,23 @@ const Header = () => {
               </Link>
             </li>
             <li>
-              <Link href="/diff" className="hover:text-gray-300">
-                DocDiff
-              </Link>
+              <button onClick={toggleUtility} className="w-full text-left hover:text-gray-300">
+                Utility
+              </button>
+              {isUtilityOpen && (
+                <ul className="pl-4 mt-2 space-y-2">
+                  <li>
+                    <Link href="/diff" className="hover:text-gray-300">
+                      DocDiff
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/week-calendar" className="hover:text-gray-300">
+                      Week Calendar
+                    </Link>
+                  </li>
+                </ul>
+              )}
             </li>
             <li>
               <Link href="/links" className="hover:text-gray-300">
