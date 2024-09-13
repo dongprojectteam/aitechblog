@@ -38,5 +38,5 @@ next-env.d.ts
 /posts
 /book-reviews
 /drafts
-/public/uploads/*
+/public/uploads
 /data/visits.json
