@@ -8,7 +8,14 @@ export async function GET() {
   try {
     const fileContents = await fs.readFile(filePath, 'utf8')
     const visits = JSON.parse(fileContents)
-    return NextResponse.json({ success: true, visits })
+    return NextResponse.json(
+      { success: true, visits },
+      {
+        headers: {
+          'Cache-Control': 'no-store, max-age=0',
+        },
+      }
+    )
   } catch (error) {
     console.error('Error reading visits file:', error)
     return NextResponse.json(
