@@ -14,7 +14,7 @@ export default function StatsView() {
   useEffect(() => {
     async function fetchStats() {
       try {
-        const response = await fetch('/api/getVisits');
+        const response = await fetch(`/api/getVisits/${Date.now()}`);
         if (!response.ok) {
           throw new Error('Failed to fetch stats');
         }
