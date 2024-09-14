@@ -17,7 +17,6 @@ export async function GET(request: Request) {
 
   if (id) {
     const postData = await getPostData(id)
-    console.log(postData)
     return NextResponse.json(postData)
   }
 

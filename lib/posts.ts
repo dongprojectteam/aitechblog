@@ -66,7 +66,7 @@ export async function getPostData(id: string) {
 
   // Use remark to convert markdown into HTML string
   const processedContent = await remark()
-    .use(remarkGfm)  // GitHub Flavored Markdown 지원 추가
+    .use(remarkGfm) // GitHub Flavored Markdown 지원 추가
     .use(html)
     .process(matterResult.content)
   const contentHtml = processedContent.toString()
@@ -85,6 +85,7 @@ export async function getPostData(id: string) {
     ...(matterResult.data as {
       title: string
       date: string
+      updated: string
       tags: string[]
       category: string
       uploadedImages: string[]
@@ -132,6 +133,7 @@ export function createPost(postData: {
   const fileContent = `---
 title: "${title}"
 date: "${formattedDateTime}"
+updated: "${formattedDateTime}"
 tags: [${tags.map((tag: string) => `"${tag}"`).join(', ')}]
 category: "${category}"
 author: "Donghyuk Kim"
@@ -166,7 +168,7 @@ export function updatePost(fileName: string, postData: Post) {
     throw new Error('Post not found')
   }
 
-  const formattedDateTime = new Date(date)
+  const formattedDateTime = new Date()
     .toISOString()
     .replace(/T/, ' ')
     .replace(/\..+/, '')
@@ -175,7 +177,8 @@ export function updatePost(fileName: string, postData: Post) {
 
   const fileContent = `---
 title: "${title}"
-date: "${formattedDateTime}"
+date: "${date}"
+updated: "${formattedDateTime}"
 tags: [${tags.map((tag: string) => `"${tag}"`).join(', ')}]
 category: "${category}"
 author: "Donghyuk Kim"
@@ -213,18 +216,18 @@ export function getAllTags(): string[] {
 }
 
 export function getTagsWithCount(): { tag: string; count: number }[] {
-  const allPostsData = getSortedPostsData();
-  const tagCount: { [key: string]: number } = {};
+  const allPostsData = getSortedPostsData()
+  const tagCount: { [key: string]: number } = {}
 
-  allPostsData.forEach(post => {
-    post.tags?.forEach(tag => {
-      tagCount[tag] = (tagCount[tag] || 0) + 1;
-    });
-  });
+  allPostsData.forEach((post) => {
+    post.tags?.forEach((tag) => {
+      tagCount[tag] = (tagCount[tag] || 0) + 1
+    })
+  })
 
   return Object.entries(tagCount)
     .map(([tag, count]) => ({ tag, count }))
-    .sort((a, b) => b.count - a.count); // 내림차순 정렬
+    .sort((a, b) => b.count - a.count) // 내림차순 정렬
 }
 
 export async function markdownToHtml(markdown: string) {

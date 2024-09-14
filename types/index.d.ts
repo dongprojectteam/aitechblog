@@ -8,6 +8,7 @@ declare global {
     contentHtml?: string
     tags: string[]
     date: string
+    updated?: string
     category: string
     uploadedImages: string[]
     privateMessage?: string
@@ -24,6 +25,7 @@ declare global {
     uploadedImages: string[]
     coverImage: string
     date: string
+    updated?: string
   }
 
   interface Memo {

@@ -20,6 +20,7 @@ export async function getSortedBookReviewsData() {
         id,
         ...(matterResult.data as {
           date: string
+          updated: string
           title: string
           author: string
           rating: number
@@ -48,6 +49,7 @@ export async function getBookReviewData(slug: string) {
     contentHtml,
     ...(matterResult.data as {
       date: string
+      updated: string
       title: string
       author: string
       rating: number
@@ -107,6 +109,7 @@ title: "${title}"
 author: "${author}"
 rating: ${rating}
 date: "${formattedDateTime}"
+updated: "${formattedDateTime}"
 tags: [${tags.map((tag: string) => `"${tag}"`).join(', ')}]
 uploadedImages: [${uploadedImages
     .map((image: string) => `"${image}"`)
@@ -126,10 +129,7 @@ ${content}
   return fileName
 }
 
-export function updateBookReview(
-  fileName: string,
-  reviewData: BookReview
-) {
+export function updateBookReview(fileName: string, reviewData: BookReview) {
   const {
     title,
     author,
@@ -147,7 +147,7 @@ export function updateBookReview(
     throw new Error('Book review not found')
   }
 
-  const formattedDateTime = new Date(date)
+  const formattedDateTime = new Date()
     .toISOString()
     .replace(/T/, ' ')
     .replace(/\..+/, '')
@@ -156,7 +156,8 @@ export function updateBookReview(
 title: "${title}"
 author: "${author}"
 rating: ${rating}
-date: "${formattedDateTime}"
+date: "${date}"
+updated: "${formattedDateTime}"
 tags: [${tags.map((tag: string) => `"${tag}"`).join(', ')}]
 uploadedImages: [${uploadedImages
     .map((image: string) => `"${image}"`)

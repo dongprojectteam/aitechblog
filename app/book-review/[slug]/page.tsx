@@ -2,6 +2,15 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { getBookReviewData, getSortedBookReviewsData } from '@/lib/book-reviews'
 import { incrementVisits } from '@/lib/incrementVisits';
+import { FaCalendar, FaEdit } from 'react-icons/fa';
+
+function formatDate(dateString: string) {
+  return new Date(dateString).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+}
 
 export default async function BookReview({ params }: { params: { slug: string } }) {
   await incrementVisits(`/posts/${params.slug}`);
@@ -69,7 +78,17 @@ export default async function BookReview({ params }: { params: { slug: string } 
         </div>
         <h1 className="text-4xl font-bold mb-4 text-gray-900">{reviewData.title}</h1>
         <div className="mb-8 text-gray-600">
-          <span>{reviewData.reviewer}</span> • <time>{reviewData.date}</time>
+          <span>{reviewData.reviewer}</span> •
+          <span className="flex items-center inline-block">
+            <FaCalendar className="mr-1" />
+            <time>{formatDate(reviewData.date)}</time>
+          </span>
+          {reviewData.updated && reviewData.updated !== reviewData.date && (
+            <span className="flex items-center inline-block ml-4">
+              <FaEdit className="mr-1" />
+              <time>Updated: {formatDate(reviewData.updated)}</time>
+            </span>
+          )}
         </div>
         <div className="prose prose-lg max-w-none mb-8">
           <div dangerouslySetInnerHTML={{ __html: reviewData.contentHtml }} />

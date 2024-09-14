@@ -2,16 +2,24 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getSortedBookReviewsData } from '@/lib/book-reviews';
 import Pagination from '@/components/Pagination';
-import { FaStar, FaCalendar, FaUser, FaBook } from 'react-icons/fa';
+import { FaStar, FaCalendar, FaUser, FaBook, FaEdit } from 'react-icons/fa';
 
 const ITEMS_PER_PAGE = 9;
+
+function formatDate(dateString: string) {
+  return new Date(dateString).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+}
 
 export default async function BookReviewsPage({
   searchParams,
 }: {
   searchParams: { page: string; q?: string };
 }) {
-  
+
   const allBookReviews = await getSortedBookReviewsData();
   const page = parseInt(searchParams.page || '1', 10);
   const searchQuery = searchParams.q || '';
@@ -85,10 +93,18 @@ export default async function BookReviewsPage({
                       <FaStar className="mr-1" />
                       <span>{review.rating.toFixed(1)}</span>
                     </div>
-                    <p className="text-sm text-gray-500 flex items-center">
-                      <FaCalendar className="mr-2" />
-                      {new Date(review.date).toLocaleDateString()}
-                    </p>
+                    <div className="text-sm text-gray-500 flex flex-col">
+                      <span className="flex items-center">
+                        <FaCalendar className="mr-2" />
+                        {formatDate(review.date)}
+                      </span>
+                      {review.updated && review.updated !== review.date && (
+                        <span className="flex items-center mt-1">
+                          <FaEdit className="mr-2" />
+                          Updated: {formatDate(review.updated)}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </article>
               </Link>

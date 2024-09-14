@@ -18,6 +18,7 @@ export default function ContentForm({ post = null, onUpdate = null }: ContentFor
   const [categories, setCategories] = useState<string[]>([]);
   const [showPreview, setShowPreview] = useState(false);
   const [previewHtml, setPreviewHtml] = useState('');
+  const [updated, setUpdated] = useState('');
 
   const loadDraft = useCallback(async () => {
     try {
@@ -30,6 +31,7 @@ export default function ContentForm({ post = null, onUpdate = null }: ContentFor
         setCategory(draftData.category || categories[0]);
         setUploadedImages(draftData.uploadedImages || []);
         setPrivateMessage(draftData.privateMessage || '');
+        setUpdated(draftData.updated || ''); // 추가된 부분
         console.log('Draft loaded successfully!');
       } else if (response.status === 404) {
         console.log('No draft found');
@@ -52,21 +54,22 @@ export default function ContentForm({ post = null, onUpdate = null }: ContentFor
       setCategory(post.category);
       setUploadedImages(post.uploadedImages || []);
       setPrivateMessage(post.privateMessage || '');
+      setUpdated(post.updated || post.date); // 추가된 부분
     } else {
       loadDraft();
     }
   }, [post, loadDraft]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     const trimmedTags = tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
-
+    const now = new Date().toISOString();
     const postData = {
       title,
       content,
       tags: trimmedTags,
-      date: new Date().toISOString(),
+      date: post ? post.date : now,
+      updated: now, // 추가된 부분
       category,
       uploadedImages,
       privateMessage,
@@ -142,7 +145,7 @@ export default function ContentForm({ post = null, onUpdate = null }: ContentFor
   };
 
   const saveDraft = async () => {
-    const draftData = { title, content, tags, category, uploadedImages, privateMessage };
+    const draftData = { title, content, tags, category, uploadedImages, privateMessage, updated };
     try {
       const response = await fetch('/api/drafts', {
         method: 'POST',
@@ -216,7 +219,7 @@ export default function ContentForm({ post = null, onUpdate = null }: ContentFor
       });
 
       console.log(response)
-  
+
       if (response.ok) {
         const data = await response.json();
         setPreviewHtml(data.html);
@@ -234,10 +237,10 @@ export default function ContentForm({ post = null, onUpdate = null }: ContentFor
     onClose: () => void;
     html: string;
   }
-  
+
   const PreviewModal: React.FC<PreviewModalProps> = ({ isOpen, onClose, html }) => {
     if (!isOpen) return null;
-  
+
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div className="bg-white p-6 rounded-lg w-3/4 h-3/4 overflow-auto">

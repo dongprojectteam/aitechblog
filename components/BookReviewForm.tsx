@@ -15,6 +15,7 @@ export default function BookReviewForm({ review = null, onUpdate = null }: BookR
   const [tags, setTags] = useState('');
   const [coverImage, setCoverImage] = useState('');
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+  const [updated, setUpdated] = useState('');
 
 
   // Load review data if it's provided (for editing)
@@ -27,6 +28,7 @@ export default function BookReviewForm({ review = null, onUpdate = null }: BookR
       setTags(review.tags.join(', '));
       setCoverImage(review.coverImage);
       setUploadedImages(review.uploadedImages || []);
+      setUpdated(review.updated || ''); // 추가된 부분
     } else {
       loadDraft(); // Load draft if it's a new review
     }
@@ -44,7 +46,7 @@ export default function BookReviewForm({ review = null, onUpdate = null }: BookR
     e.preventDefault();
 
     const trimmedTags = tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
-
+    const now = new Date().toISOString();
     const reviewData = {
       title,
       author,
@@ -53,7 +55,8 @@ export default function BookReviewForm({ review = null, onUpdate = null }: BookR
       tags: trimmedTags,
       uploadedImages,
       coverImage,
-      date: new Date().toISOString(),
+      date: review ? review.date : now,
+      updated: now
     };
 
     const url = review ? `/api/book-reviews/?fileName=${review.id || review.slug}.md` : '/api/book-reviews';
@@ -89,6 +92,7 @@ export default function BookReviewForm({ review = null, onUpdate = null }: BookR
     setTags('');
     setCoverImage('');
     setUploadedImages([]);
+    setUpdated('')
   };
 
   // Handle image uploads
@@ -128,7 +132,7 @@ export default function BookReviewForm({ review = null, onUpdate = null }: BookR
 
   // Save a draft of the book review
   const saveDraft = async () => {
-    const draftData = { title, author, rating, content, tags, coverImage, uploadedImages };
+    const draftData = { title, author, rating, content, tags, coverImage, uploadedImages, updated };
     try {
       const response = await fetch('/api/drafts', {
         method: 'POST',
@@ -165,6 +169,7 @@ export default function BookReviewForm({ review = null, onUpdate = null }: BookR
         setTags(draftData.tags || '');
         setCoverImage(draftData.coverImage);
         setUploadedImages(draftData.uploadedImages || []);
+        setUpdated(draftData.updated || ''); // 추가된 부분
         console.log('Draft loaded successfully!');
       } else if (response.status === 404) {
         // No draft found, do nothing
