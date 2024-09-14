@@ -31,6 +31,14 @@ else
     echo "소프트 링크 이미 존재: visits.json"
 fi
 
+# memos.json 파일에 대한 소프트 링크 생성 (존재하지 않는 경우)
+if [ ! -L "${SCRIPT_DIR}/data/memos.json" ]; then
+    ln -sf "${BLOG_DATA_DIR}/data/memos.json" "${SCRIPT_DIR}/data/memos.json"
+    echo "소프트 링크 생성: memos.json"
+else
+    echo "소프트 링크 이미 존재: memos.json"
+fi
+
 # public/uploads 디렉토리 소프트 링크 생성 (존재하지 않는 경우)
 mkdir -p "${SCRIPT_DIR}/public"
 if [ ! -L "${SCRIPT_DIR}/public/uploads" ]; then

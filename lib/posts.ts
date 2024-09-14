@@ -226,3 +226,11 @@ export function getTagsWithCount(): { tag: string; count: number }[] {
     .map(([tag, count]) => ({ tag, count }))
     .sort((a, b) => b.count - a.count); // 내림차순 정렬
 }
+
+export async function markdownToHtml(markdown: string) {
+  const processedContent = await remark()
+    .use(remarkGfm)
+    .use(html)
+    .process(markdown)
+  return processedContent.toString()
+}

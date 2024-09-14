@@ -16,6 +16,8 @@ export default function ContentForm({ post = null, onUpdate = null }: ContentFor
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const [privateMessage, setPrivateMessage] = useState('');
   const [categories, setCategories] = useState<string[]>([]);
+  const [showPreview, setShowPreview] = useState(false);
+  const [previewHtml, setPreviewHtml] = useState('');
 
   const loadDraft = useCallback(async () => {
     try {
@@ -203,6 +205,55 @@ export default function ContentForm({ post = null, onUpdate = null }: ContentFor
     }
   };
 
+  const handlePreview = async () => {
+    try {
+      const response = await fetch('/api/posts/preview', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ content }),
+      });
+
+      console.log(response)
+  
+      if (response.ok) {
+        const data = await response.json();
+        setPreviewHtml(data.html);
+        setShowPreview(true);
+      } else {
+        console.error('Failed to generate preview');
+      }
+    } catch (error) {
+      console.error('Error generating preview:', error);
+    }
+  };
+
+  interface PreviewModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    html: string;
+  }
+  
+  const PreviewModal: React.FC<PreviewModalProps> = ({ isOpen, onClose, html }) => {
+    if (!isOpen) return null;
+  
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white p-6 rounded-lg w-3/4 h-3/4 overflow-auto">
+          <h2 className="text-2xl font-bold mb-4">Preview</h2>
+          <div className="prose" dangerouslySetInnerHTML={{ __html: html }} />
+          <button
+            onClick={onClose}
+            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
@@ -303,6 +354,13 @@ export default function ContentForm({ post = null, onUpdate = null }: ContentFor
         </div>
       )}
       <div className="flex justify-between mt-4">
+        <button
+          type="button"
+          onClick={handlePreview}
+          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 mr-2"
+        >
+          Preview
+        </button>
         <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">
           {post ? 'Update Post' : 'Create Post'}
         </button>
@@ -332,6 +390,11 @@ export default function ContentForm({ post = null, onUpdate = null }: ContentFor
           </>
         )}
       </div>
+      <PreviewModal
+        isOpen={showPreview}
+        onClose={() => setShowPreview(false)}
+        html={previewHtml}
+      />
     </form>
   );
 }

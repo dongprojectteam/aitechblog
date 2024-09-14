@@ -40,3 +40,4 @@ next-env.d.ts
 /drafts
 /public/uploads
 /data/visits.json
+/data/memos.json

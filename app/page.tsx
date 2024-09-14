@@ -34,7 +34,7 @@ export default async function Home({ searchParams }: { searchParams: { page?: st
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
       <div className="mb-8">
-        <h2 className="text-xl font-semibold mb-4">Tags:</h2>
+        {/* <h2 className="text-xl font-semibold mb-4">Tags:</h2> */}
         <div className="flex flex-wrap gap-2">
           {selectedTag && (
             <Link
