@@ -14,6 +14,7 @@ export default async function Home({ searchParams }: { searchParams: { page?: st
   const selectedTag = searchParams.tag || ''
 
   const filteredPosts = allPostsData.filter(post =>
+    post.category !== 'Private' && // Add this line to filter out Private posts
     (searchQuery ? (
       post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())) ||
