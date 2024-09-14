@@ -54,3 +54,21 @@ a {
     @apply px-4 py-2 text-sm text-white rounded-lg transition-colors duration-200 ease-in-out flex items-center justify-center;
   }
 }
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+.prose th,
+.prose td {
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.prose th {
+  background-color: #f3f4f6;
+  font-weight: bold;
+}

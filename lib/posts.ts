@@ -3,6 +3,7 @@ import path from 'path'
 import matter from 'gray-matter'
 import { remark } from 'remark'
 import html from 'remark-html'
+import remarkGfm from 'remark-gfm'
 import crypto from 'crypto'
 import CryptoJS from 'crypto-js'
 
@@ -65,6 +66,7 @@ export async function getPostData(id: string) {
 
   // Use remark to convert markdown into HTML string
   const processedContent = await remark()
+    .use(remarkGfm)  // GitHub Flavored Markdown 지원 추가
     .use(html)
     .process(matterResult.content)
   const contentHtml = processedContent.toString()
@@ -76,7 +78,6 @@ export async function getPostData(id: string) {
   }
 
   // Combine the data with the id and contentHtml
-
   return {
     id,
     contentHtml,
