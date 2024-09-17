@@ -3,6 +3,7 @@ import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import 'katex/dist/katex.min.css'
+import 'highlight.js/styles/default.css'
 
 export const metadata: Metadata = {
   title: {
