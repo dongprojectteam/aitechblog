@@ -1,9 +1,14 @@
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
-import { remark } from 'remark'
-import html from 'remark-html'
+import rehypeHighlight from 'rehype-highlight'
 import remarkGfm from 'remark-gfm'
+import remarkMath from 'remark-math'
+import rehypeKatex from 'rehype-katex'
+import remarkRehype from 'remark-rehype'
+import rehypeStringify from 'rehype-stringify'
+import { unified } from 'unified'
+import remarkParse from 'remark-parse'
 import crypto from 'crypto'
 import CryptoJS from 'crypto-js'
 
@@ -65,9 +70,14 @@ export async function getPostData(id: string) {
   const matterResult = matter(fileContents)
 
   // Use remark to convert markdown into HTML string
-  const processedContent = await remark()
-    .use(remarkGfm) // GitHub Flavored Markdown 지원 추가
-    .use(html)
+  const processedContent = await unified()
+    .use(remarkParse)
+    .use(remarkGfm)  // GitHub Flavored Markdown 지원 추가
+    .use(remarkMath)
+    .use(remarkRehype)
+    .use(rehypeKatex)
+    .use(rehypeHighlight)  // 코드 블록 구문 강조 추가
+    .use(rehypeStringify)
     .process(matterResult.content)
   const contentHtml = processedContent.toString()
 
@@ -231,9 +241,14 @@ export function getTagsWithCount(): { tag: string; count: number }[] {
 }
 
 export async function markdownToHtml(markdown: string) {
-  const processedContent = await remark()
-    .use(remarkGfm)
-    .use(html)
+  const processedContent = await unified()
+    .use(remarkParse)
+    .use(remarkGfm)  // GitHub Flavored Markdown 지원 추가
+    .use(remarkMath)
+    .use(remarkRehype)
+    .use(rehypeKatex)
+    .use(rehypeHighlight)  // 코드 블록 구문 강조 추가
+    .use(rehypeStringify)
     .process(markdown)
   return processedContent.toString()
 }
