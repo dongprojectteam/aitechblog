@@ -69,8 +69,8 @@ export default async function BookReviewsPage({
                       <Image
                         src={review.coverImage}
                         alt={`Cover of ${review.title}`}
-                        layout="fill"
-                        objectFit="cover"
+                        fill
+                        style={{ objectFit: 'cover' }}
                         className="transition-opacity duration-300 ease-in-out hover:opacity-75"
                       />
                     ) : (

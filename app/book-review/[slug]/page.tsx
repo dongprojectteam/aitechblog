@@ -64,8 +64,8 @@ export default async function BookReview({ params }: { params: { slug: string } 
             <Image
               src={reviewData.coverImage}
               alt={`Cover of ${reviewData.title}`}
-              layout="fill"
-              objectFit="cover"
+              fill
+              style={{ objectFit: 'cover' }}
               className="rounded-lg"
             />
           ) : (

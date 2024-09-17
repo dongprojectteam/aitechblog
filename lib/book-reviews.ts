@@ -34,6 +34,13 @@ export async function getSortedBookReviewsData() {
   return allBookReviewsData.sort((a, b) => (a.date < b.date ? 1 : -1))
 }
 
+const centerImagesInHtml = (html: string) => {
+  return html.replace(
+    /<img(.*?)>/g, 
+    '<div class="content"><img$1></div>'
+  );
+};
+
 export async function getBookReviewData(slug: string) {
   const fullPath = path.join(bookReviewsDirectory, `${slug}.md`)
   const fileContents = fs.readFileSync(fullPath, 'utf8')
@@ -41,7 +48,7 @@ export async function getBookReviewData(slug: string) {
   const processedContent = await remark()
     .use(html)
     .process(matterResult.content)
-  const contentHtml = processedContent.toString()
+  const contentHtml = centerImagesInHtml(processedContent.toString())
 
   return {
     slug,

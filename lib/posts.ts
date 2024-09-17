@@ -62,6 +62,13 @@ export function getSortedPostsData(): Post[] {
   })
 }
 
+const centerImagesInHtml = (html: string) => {
+  return html.replace(
+    /<img(.*?)>/g, 
+    '<div class="content"><img$1></div>'
+  );
+};
+
 export async function getPostData(id: string) {
   const fullPath = path.join(postsDirectory, `${id}.md`)
   const fileContents = fs.readFileSync(fullPath, 'utf8')
@@ -79,7 +86,8 @@ export async function getPostData(id: string) {
     .use(rehypeHighlight)  // 코드 블록 구문 강조 추가
     .use(rehypeStringify)
     .process(matterResult.content)
-  const contentHtml = processedContent.toString()
+  
+  const contentHtml = centerImagesInHtml(processedContent.toString())
 
   // Decrypt privateMessage if it exists
   let privateMessage = matterResult.data.privateMessage
