@@ -75,19 +75,7 @@ export async function getPostData(id: string) {
 
   // Use gray-matter to parse the post metadata section
   const matterResult = matter(fileContents)
-
-  // Use remark to convert markdown into HTML string
-  const processedContent = await unified()
-    .use(remarkParse)
-    .use(remarkGfm)  // GitHub Flavored Markdown 지원 추가
-    .use(remarkMath)
-    .use(remarkRehype)
-    .use(rehypeKatex)
-    .use(rehypeHighlight)  // 코드 블록 구문 강조 추가
-    .use(rehypeStringify)
-    .process(matterResult.content)
-  
-  const contentHtml = centerImagesInHtml(processedContent.toString())
+  const contentHtml = centerImagesInHtml(await markdownToHtml(matterResult.content))
 
   // Decrypt privateMessage if it exists
   let privateMessage = matterResult.data.privateMessage
