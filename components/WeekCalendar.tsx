@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { startOfMonth, endOfMonth, eachDayOfInterval, format, getWeek, addMonths, subMonths, isSameMonth, isSaturday, isSunday, startOfWeek, endOfWeek, setMonth, setYear } from 'date-fns';
+import { startOfMonth, endOfMonth, eachDayOfInterval, format, getWeek, addMonths, subMonths, isSameMonth, isSaturday, isSunday, startOfWeek, endOfWeek, setMonth, setYear, isToday } from 'date-fns';
 import Lunar from 'lunar-javascript';
 import { IoChevronBackOutline, IoChevronForwardOutline } from 'react-icons/io5';
+import { IoTodayOutline } from 'react-icons/io5'; // 오늘 아이콘 추가
 
 const MonthCalendar: React.FC = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -35,17 +36,21 @@ const MonthCalendar: React.FC = () => {
     weeks.push(currentWeek);
   }
 
+  const goToToday = () => {
+    setCurrentDate(new Date());
+  };
+
   const getLunarDate = (date: Date) => {
     const solar = Lunar.Solar.fromDate(date);
     const lunar = solar.getLunar();
     return `${lunar.getMonth()}.${lunar.getDay()}`;
   };
 
-  const isHoliday = (date: Date) : string | null => {
+  const isHoliday = (date: Date): string | null => {
     const solarDate = format(date, 'MM-dd');
     const lunarDate = getLunarDate(date);
-    
-    const holidays : Record<string, string> = {
+
+    const holidays: Record<string, string> = {
       '01-01': 'Happy New Year',
       '03-01': '삼일절',
       '05-05': '어린이날',
@@ -151,23 +156,33 @@ const MonthCalendar: React.FC = () => {
         >
           <IoChevronBackOutline />
         </button>
-        <div className="relative">
+        <div className="flex items-center">
+          <div className="relative mr-4">
+            <button
+              type="button"
+              onClick={() => setIsSelectingMonth(!isSelectingMonth)}
+              className="text-2xl font-bold text-center text-gray-800 mr-2"
+            >
+              {format(currentDate, 'MMMM')}
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsSelectingYear(!isSelectingYear)}
+              className="text-2xl font-bold text-center text-gray-800"
+            >
+              {format(currentDate, 'yyyy')}
+            </button>
+            {isSelectingMonth && renderMonthSelector()}
+            {isSelectingYear && renderYearSelector()}
+          </div>
           <button
             type="button"
-            onClick={() => setIsSelectingMonth(!isSelectingMonth)}
-            className="text-2xl font-bold text-center text-gray-800 mr-2"
+            onClick={goToToday}
+            className="flex items-center px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none transition duration-200 ease-in-out"
           >
-            {format(currentDate, 'MMMM')}
+            <IoTodayOutline className="mr-1" /> {/* 아이콘 추가 */}
+            Today
           </button>
-          <button
-            type="button"
-            onClick={() => setIsSelectingYear(!isSelectingYear)}
-            className="text-2xl font-bold text-center text-gray-800"
-          >
-            {format(currentDate, 'yyyy')}
-          </button>
-          {isSelectingMonth && renderMonthSelector()}
-          {isSelectingYear && renderYearSelector()}
         </div>
         <button
           type="button"
@@ -197,14 +212,18 @@ const MonthCalendar: React.FC = () => {
               !isCurrentMonth ? 'text-gray-400' :
                 holidayName || isSunday(day) ? 'bg-red-100 text-red-800' :
                   isSaturday(day) ? 'bg-blue-100 text-blue-800' :
-                    'bg-white text-gray-800';
+                    isToday(day) ? 'bg-green-100 text-green-800' :
+                      'bg-white text-gray-800';
 
             return (
               <div
                 key={dayIndex}
                 className={`p-2 border border-gray-200 rounded-lg text-center ${dayClass} flex flex-col justify-center items-center`}
               >
-                <div className="text-lg font-semibold">{format(day, 'd')}</div>
+                <div className="text-lg font-semibold">
+                  {format(day, 'd')}
+                  {isToday(day) && <span className="ml-1 text-xs">Today</span>}
+                </div>
                 <div className="text-xs text-gray-500 mt-1">{getLunarDate(day)}</div>
                 {holidayName && (
                   <div className="text-xs text-red-600 mt-1">{holidayName}</div>
