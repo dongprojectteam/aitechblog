@@ -132,6 +132,18 @@
       "category": "Music Generation",
       "sites": [
         {
+          "title": "Udio",
+          "description": "Udio builds AI tools to enable the next generation of music creators.",
+          "url": "https://www.udio.com/",
+          "imageUrl": "https://pbs.twimg.com/profile_images/1777855494075359232/lbsQkZHS_400x400.png"
+        },
+        {
+          "title": "SUNO",
+          "description": "Suno is building a future where anyone can make great music.",
+          "url": "https://suno.com/",
+          "imageUrl": "https://www.androidheadlines.com/wp-content/uploads/2023/12/Suno-Logo-1420x799.webp"
+        },
+        {
           "title": "AIVA",
           "description": "AI composer creating original & personalized music",
           "url": "https://www.aiva.ai",
