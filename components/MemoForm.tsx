@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { FaPaperPlane, FaTimes, FaFont, FaExclamationTriangle } from 'react-icons/fa'
 
-const MAX_CHARS = 1000 // 최대 글자 수 제한
+const MAX_CHARS = 10000 // 최대 글자 수 제한
 
 interface MemoFormProps {
   onMemoAdded: (content: string) => Promise<void>
