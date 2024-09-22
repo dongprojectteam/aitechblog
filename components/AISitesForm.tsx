@@ -3,18 +3,8 @@
 import React, { useState } from 'react';
 
 interface AISitesFormProps {
-  initialData: {
-    aiSites: {
-      category: string;
-      sites: {
-        title: string;
-        description: string;
-        url: string;
-        imageUrl: string;
-      }[];
-    }[];
-  };
-  onSubmit: (data: any) => Promise<void>;
+  initialData: AISitesData;
+  onSubmit: (data: AISitesData) => Promise<void>;
 }
 
 export default function AISitesForm({ initialData, onSubmit }: AISitesFormProps) {
