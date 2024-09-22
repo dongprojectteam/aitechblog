@@ -11,9 +11,10 @@ export async function GET() {
   }
 }
 
-export async function PUT(request: NextRequest) {
-  try {
-    const updatedData = await request.json();
+export async function POST(request: NextRequest) {
+  const updatedData = await request.json();
+  
+  try {    
     saveAISites(updatedData);
     return NextResponse.json({ message: 'AI sites updated successfully' });
   } catch (error) {

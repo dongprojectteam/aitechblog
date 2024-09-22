@@ -38,6 +38,7 @@ export default function AdminPage() {
   useEffect(() => {
     if (isLoggedIn) {
       fetchAiSites();
+      fetchMemos()
     }
   }, [isLoggedIn]);
 
@@ -57,7 +58,7 @@ export default function AdminPage() {
   const updateAiSites = async (updatedData: AISitesData) => {
     try {
       const response = await fetch('/api/aiSites', {
-        method: 'PUT',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
