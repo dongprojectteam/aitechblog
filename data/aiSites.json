@@ -251,7 +251,14 @@
     },
     {
       "category": "Data Science",
-      "sites": []
+      "sites": [
+        {
+          "title": "테스트",
+          "description": "test",
+          "url": "test",
+          "imageUrl": "test"
+        }
+      ]
     }
   ]
 }
