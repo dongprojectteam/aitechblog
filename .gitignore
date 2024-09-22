@@ -41,3 +41,4 @@ next-env.d.ts
 /public/uploads
 /data/visits.json
 /data/memos.json
+/data/aiSites.json
