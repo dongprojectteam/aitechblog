@@ -6,13 +6,14 @@ import { FaPaperPlane, FaTimes, FaFont, FaExclamationTriangle } from 'react-icon
 const MAX_CHARS = 10000 // 최대 글자 수 제한
 
 interface MemoFormProps {
-  onMemoAdded: (content: string) => Promise<void>
+  onMemoAdded: (newMemo: Memo) => void
 }
 
 export default function MemoForm({ onMemoAdded }: MemoFormProps) {
   const [content, setContent] = useState('')
   const [charCount, setCharCount] = useState(0)
   const [showWarning, setShowWarning] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
     setCharCount(content.length)
@@ -21,9 +22,28 @@ export default function MemoForm({ onMemoAdded }: MemoFormProps) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (content.trim() && content.length <= MAX_CHARS) {
-      await onMemoAdded(content)
-      setContent('')
+    if (content.trim() && content.length <= MAX_CHARS && !isSubmitting) {
+      setIsSubmitting(true)
+      try {
+        const response = await fetch('/api/memos', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ content }),
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const newMemo = await response.json();
+        onMemoAdded(newMemo);
+        setContent('');
+      } catch (error) {
+        console.error('Error adding memo:', error);
+        alert('Failed to add memo. Please try again.');
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   }
 
@@ -64,15 +84,16 @@ export default function MemoForm({ onMemoAdded }: MemoFormProps) {
             type="button"
             onClick={() => setContent('')}
             className="btn bg-gray-500 hover:bg-gray-600"
+            disabled={isSubmitting}
           >
             <FaTimes className="mr-2" /> Clear
           </button>
           <button
             type="submit"
-            className={`btn ${content.trim() && content.length <= MAX_CHARS ? 'bg-blue-500 hover:bg-blue-600' : 'bg-gray-400 cursor-not-allowed'}`}
-            disabled={!content.trim() || content.length > MAX_CHARS}
+            className={`btn ${content.trim() && content.length <= MAX_CHARS && !isSubmitting ? 'bg-blue-500 hover:bg-blue-600' : 'bg-gray-400 cursor-not-allowed'}`}
+            disabled={!content.trim() || content.length > MAX_CHARS || isSubmitting}
           >
-            <FaPaperPlane className="mr-2" /> Save Memo
+            <FaPaperPlane className="mr-2" /> {isSubmitting ? 'Saving...' : 'Save Memo'}
           </button>
         </div>
       </form>

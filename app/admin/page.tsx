@@ -33,47 +33,14 @@ export default function AdminPage() {
   const [isNewPost, setIsNewPost] = useState(false);
   const [isNewReview, setIsNewReview] = useState(false);
   const [memos, setMemos] = useState<[] | Memo[]>([])
-  const [aiSites, setAiSites] = useState<AISitesData | null>(null);
+
 
   useEffect(() => {
     if (isLoggedIn) {
-      fetchAiSites();
       fetchMemos()
     }
   }, [isLoggedIn]);
 
-  const fetchAiSites = async () => {
-    try {
-      const response = await fetch('/api/aiSites');
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      setAiSites(data);
-    } catch (error) {
-      console.error('Error fetching AI sites:', error);
-    }
-  };
-
-  const updateAiSites = async (updatedData: AISitesData) => {
-    try {
-      const response = await fetch('/api/aiSites', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedData),
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      setAiSites(updatedData);
-      alert('AI Sites updated successfully!');
-    } catch (error) {
-      console.error('Error updating AI sites:', error);
-      alert('Failed to update AI Sites');
-    }
-  };
 
 
   const handleLogin = (username: string, password: string) => {
@@ -143,24 +110,9 @@ export default function AdminPage() {
     }
   }
 
-  const addMemo = async (content: string) => {
-    try {
-      const response = await fetch('/api/memos', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ content }),
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const newMemo = await response.json();
-      setMemos(prevMemos => [newMemo, ...prevMemos]);
-    } catch (error) {
-      console.error('Error adding memo:', error);
-    }
-  }
+  const handleMemoAdded = (newMemo: Memo) => {
+    setMemos(prevMemos => [newMemo, ...prevMemos]);
+  };
 
   const updateMemo = async (id: string, content: string) => {
     try {
@@ -236,7 +188,7 @@ export default function AdminPage() {
           <main className="container mx-auto p-4">
             <h1 className="text-3xl font-bold mb-4">My Memos</h1>
             <MemoSearch onSearch={handleSearch} onViewAll={handleViewAll} />
-            <MemoForm onMemoAdded={addMemo} />
+            <MemoForm onMemoAdded={handleMemoAdded} />
             <MemoList memos={memos} onUpdate={updateMemo} onDelete={deleteMemo} />
           </main>
         )
@@ -246,11 +198,7 @@ export default function AdminPage() {
         return (
           <div>
             <h2 className="text-2xl font-bold mb-4">AI Sites Editor</h2>
-            {aiSites ? (
-              <AISitesForm initialData={aiSites} onSubmit={updateAiSites} />
-            ) : (
-              <p>Loading AI sites data...</p>
-            )}
+            <AISitesForm isLoggedIn={isLoggedIn} />
           </div>
         );
       default:
