@@ -2,7 +2,7 @@
 
 # 스크립트 실행 디렉토리를 기준으로 상대 경로 설정
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-BLOG_DATA_DIR="${SCRIPT_DIR}/../blog_data"
+BLOG_DATA_DIR="../../blog_data"
 
 # posts 디렉토리 소프트 링크 생성 (존재하지 않는 경우)
 if [ ! -L "${SCRIPT_DIR}/posts" ]; then
