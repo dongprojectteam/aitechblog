@@ -10,6 +10,7 @@ import MemoList from '@/components/MemoList'
 import MemoForm from '@/components/MemoForm'
 import MemoSearch from '@/components/MemoSearch'
 import StatsView from '@/components/StatsView';
+import AISitesForm from '@/components/AISitesForm';
 
 const ADMIN_CREDENTIALS = {
   username: process.env.NEXT_PUBLIC_ADMIN_USERNAME,
@@ -20,7 +21,8 @@ const TABS = {
   CONTENT: 'content',
   BOOK_REVIEW: 'bookReview',
   MEMO: 'memo',
-  STATS: 'stats'  // 새로운 탭 추가
+  STATS: 'stats',
+  AI_SITES: 'aiSites' // 새로운 탭 추가
 };
 
 export default function AdminPage() {
@@ -31,14 +33,46 @@ export default function AdminPage() {
   const [isNewPost, setIsNewPost] = useState(false);
   const [isNewReview, setIsNewReview] = useState(false);
   const [memos, setMemos] = useState<[] | Memo[]>([])
+  const [aiSites, setAiSites] = useState<AISitesData | null>(null);
 
   useEffect(() => {
-    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    setIsLoggedIn(loggedIn);
-    if (loggedIn) {
-      fetchMemos();
+    if (isLoggedIn) {
+      fetchAiSites();
     }
-  }, []);
+  }, [isLoggedIn]);
+
+  const fetchAiSites = async () => {
+    try {
+      const response = await fetch('/api/aiSites');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setAiSites(data);
+    } catch (error) {
+      console.error('Error fetching AI sites:', error);
+    }
+  };
+
+  const updateAiSites = async (updatedData: AISitesData) => {
+    try {
+      const response = await fetch('/api/aiSites', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedData),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      setAiSites(updatedData);
+      alert('AI Sites updated successfully!');
+    } catch (error) {
+      console.error('Error updating AI sites:', error);
+      alert('Failed to update AI Sites');
+    }
+  };
 
 
   const handleLogin = (username: string, password: string) => {
@@ -207,6 +241,17 @@ export default function AdminPage() {
         )
       case TABS.STATS:
         return <StatsView />;
+      case TABS.AI_SITES:
+        return (
+          <div>
+            <h2 className="text-2xl font-bold mb-4">AI Sites Editor</h2>
+            {aiSites ? (
+              <AISitesForm initialData={aiSites} onSubmit={updateAiSites} />
+            ) : (
+              <p>Loading AI sites data...</p>
+            )}
+          </div>
+        );
       default:
         return null;
     }
@@ -256,6 +301,11 @@ export default function AdminPage() {
             isActive={activeTab === TABS.STATS}
             onClick={() => setActiveTab(TABS.STATS)}
             label="Statistics"
+          />
+          <TabButton
+            isActive={activeTab === TABS.AI_SITES}
+            onClick={() => setActiveTab(TABS.AI_SITES)}
+            label="AI Sites"
           />
         </nav>
       </div>

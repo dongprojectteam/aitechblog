@@ -35,6 +35,22 @@ declare global {
     createdAt: string
     updatedAt: string
   }
+
+  interface AISite {
+    title: string
+    description: string
+    url: string
+    imageUrl: string
+  }
+
+  interface AISiteCategory {
+    category: string
+    sites: AISite[]
+  }
+
+  interface AISitesData {
+    aiSites: AISiteCategory[]
+  }
 }
 
 export {} // This file needs to be a module
