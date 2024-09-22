@@ -6,9 +6,10 @@ import categoriesData from '@/data/categories.json';
 interface ContentFormProps {
   post: Post | null;
   onUpdate: (() => void) | null;
+  onCancel: (() => void) | null;
 }
 
-export default function ContentForm({ post = null, onUpdate = null }: ContentFormProps) {
+export default function ContentForm({ post = null, onUpdate = null, onCancel = null }: ContentFormProps) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [tags, setTags] = useState('');
@@ -232,6 +233,14 @@ export default function ContentForm({ post = null, onUpdate = null }: ContentFor
     }
   };
 
+  const handleCancel = () => {
+    if (onCancel) {
+      onCancel();
+    } else {
+      resetForm();
+    }
+  }
+
   interface PreviewModalProps {
     isOpen: boolean;
     onClose: () => void;
@@ -363,6 +372,13 @@ export default function ContentForm({ post = null, onUpdate = null }: ContentFor
           className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 mr-2"
         >
           Preview
+        </button>
+        <button
+          type="button"
+          onClick={handleCancel}
+          className="bg-gray-500 text-white px-4 py-2 rounded-md"
+        >
+          Cancel
         </button>
         <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">
           {post ? 'Update Post' : 'Create Post'}

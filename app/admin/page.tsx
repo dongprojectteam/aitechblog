@@ -62,6 +62,11 @@ export default function AdminPage() {
     setIsNewPost(false);
   };
 
+  const handlePostCancel = () => {
+    setSelectedPost(null)
+    setIsNewPost(false);
+  }
+
 
   const handleReviewSelect = (review: BookReview) => {
     setSelectedReview(review);
@@ -151,7 +156,7 @@ export default function AdminPage() {
     switch (activeTab) {
       case TABS.CONTENT:
         if (selectedPost || isNewPost) {
-          return <ContentForm post={selectedPost} onUpdate={handlePostUpdate} />;
+          return <ContentForm post={selectedPost} onUpdate={handlePostUpdate} onCancel={handlePostCancel}/>;
         } else {
           return (
             <div>
@@ -162,7 +167,7 @@ export default function AdminPage() {
               >
                 New Post
               </button>
-              <ContentList onPostSelect={handlePostSelect} />
+              <ContentList onPostSelect={handlePostSelect}/>
             </div>
           );
         }
