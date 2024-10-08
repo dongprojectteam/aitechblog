@@ -31,18 +31,30 @@ const LadderGame: React.FC<LadderGameProps> = ({ players, results }) => {
     const [showLadder, setShowLadder] = useState(false)
     const [animationProgress, setAnimationProgress] = useState<number[]>([])
     const [paths, setPaths] = useState<PathSegment[][]>([])
+    const [showModal, setShowModal] = useState(false);
+    const [reCalculate, setReCalculate] = useState(false);
+    const [prepared, setPrepared] = useState(false);
 
-    useEffect(() => {
+    const resetGame = () => {
         generateLadder()
         setPlayerResults(Array(players.length).fill(''))
         setShowLadder(false)
         setAnimationProgress([])
         setPaths([])
+        setReCalculate(false)
+    }
+
+    useEffect(() => {
+        resetGame()
     }, [players, results])
 
     useEffect(() => {
         drawCanvas()
     }, [showLadder, ladderLines, playerResults, players, results, animationProgress])
+
+    const showResultsModal = () => {
+        setShowModal(true);
+    };
 
     const generateLadder = () => {
         const lines: boolean[][] = []
@@ -69,9 +81,14 @@ const LadderGame: React.FC<LadderGameProps> = ({ players, results }) => {
         for (let j = 0; j < 10; j++) {
             for (let i = 0; i < lines.length - 1; i++) {
                 if (lines[i][j] && lines[i + 1][j]) {
-                    lines[i + 1][j] = false
+                    lines[i + 1][j] = false 
                 }
             }
+        }
+
+        // 각 라인별 마지막 칸은 모두 false 처리
+        for (let i = 0; i < lines.length; i++) {
+            lines[i][lines[i].length - 1] = false
         }
 
         setLadderLines(lines)
@@ -181,6 +198,8 @@ const LadderGame: React.FC<LadderGameProps> = ({ players, results }) => {
             ctx.font = 'italic 20px Arial'
             ctx.fillText('Click "Calculate Results" to show the ladder', width / 2, height / 2)
         }
+
+        setPrepared(true)
     }
 
     const getMargin = (ctx: CanvasRenderingContext2D, text: string): number => {
@@ -244,6 +263,8 @@ const LadderGame: React.FC<LadderGameProps> = ({ players, results }) => {
         }
 
         setPlayerResults(newResults)
+        showResultsModal();
+        setReCalculate(true)
     }
 
     const animatePath = async (playerIndex: number, pathLength: number) => {
@@ -257,6 +278,37 @@ const LadderGame: React.FC<LadderGameProps> = ({ players, results }) => {
         }
     }
 
+    const ResultsModal = ({ isOpen, onClose, players, playerResults }:
+        { isOpen: boolean, onClose: () => void, players: string[], playerResults: string[] }) => {
+        if (!isOpen) return null;
+
+        return (
+            <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" id="my-modal">
+                <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+                    <div className="mt-3 text-center">
+                        <h3 className="text-lg leading-6 font-medium text-gray-900">게임 결과</h3>
+                        <div className="mt-2 px-7 py-3">
+                            {players.map((player, index) => (
+                                <p key={index} className="text-sm text-gray-500">
+                                    {player}: {playerResults[index]}
+                                </p>
+                            ))}
+                        </div>
+                        <div className="items-center px-4 py-3">
+                            <button
+                                id="ok-btn"
+                                className="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                onClick={onClose}
+                            >
+                                닫기
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
     return (
         <div className="flex flex-col items-center">
             <canvas
@@ -266,12 +318,19 @@ const LadderGame: React.FC<LadderGameProps> = ({ players, results }) => {
                 className="rounded-lg shadow-lg mb-4"
             />
             <button
-                onClick={calculateResults}
+                onClick={reCalculate ? resetGame : calculateResults}
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:scale-105"
-                disabled={showLadder}
+                disabled={showLadder && !reCalculate && prepared}
             >
-                Calculate Results
+                {reCalculate ? 'Redraw Ladder' : 'Show Results'}
             </button>
+
+            <ResultsModal
+                isOpen={showModal}
+                onClose={() => setShowModal(false)}
+                players={players}
+                playerResults={playerResults}
+            />
         </div>
     )
 }
