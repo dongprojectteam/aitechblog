@@ -1,4 +1,6 @@
-import React from 'react';
+'use client'
+
+import React, { useState, useEffect } from 'react'
 import WeekCalendar from '@/components/WeekCalendar';
 import { incrementVisits } from '@/lib/incrementVisits';
 
