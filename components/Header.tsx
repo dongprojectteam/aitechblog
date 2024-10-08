@@ -82,6 +82,11 @@ const Header = () => {
                     Week Calendar
                   </Link>
                 </li>
+                <li>
+                  <Link href="/ladder" className="block px-4 py-2 text-sm hover:bg-gray-600">
+                    Ladder Game
+                  </Link>
+                </li>
               </ul>
             )}
           </li>
