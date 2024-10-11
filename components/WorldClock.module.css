@@ -1,0 +1,92 @@
+.clockContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  height: 100%; /* 그리드 셀의 높이를 채우도록 설정 */
+}
+
+.city {
+  font-size: 1.5em;
+  margin-bottom: 35px;
+  color: #333;
+}
+
+.clock {
+  width: 200px;
+  height: 200px;
+  border: 10px solid #333;
+  border-radius: 50%;
+  position: relative;
+  background-color: #fff;
+}
+
+.clockFace {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.number {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #333;
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: 50% 100%;
+  background-color: #333;
+}
+
+.hourHand {
+  width: 6px;
+  height: 60px;
+  border-radius: 3px;
+}
+
+.minuteHand {
+  width: 4px;
+  height: 80px;
+  border-radius: 2px;
+}
+
+.secondHand {
+  width: 2px;
+  height: 90px;
+  background-color: #f00;
+}
+
+.centerDot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #333;
+  transform: translate(-50%, -50%);
+}
+
+.digitalTime {
+  margin-top: 30px;
+  font-size: 1.2em;
+  color: #333;
+}
+
+/* styles/WorldClockGrid.module.css */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}

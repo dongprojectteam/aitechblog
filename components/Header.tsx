@@ -29,6 +29,11 @@ const Header = () => {
     setIsModalOpen(false)
   }
 
+  const closeMenus = () => {
+    setIsMenuOpen(false)
+    setIsUtilityOpen(false)
+  }
+
   const showSearch = pathname === '/' || pathname === '/book-review'
 
   return (
@@ -57,12 +62,12 @@ const Header = () => {
             </li>
           )}
           <li>
-            <Link href="/" className="hover:text-gray-300">
+            <Link href="/" className="hover:text-gray-300" onClick={closeMenus}>
               AI
             </Link>
           </li>
           <li>
-            <Link href="/book-review" className="hover:text-gray-300">
+            <Link href="/book-review" className="hover:text-gray-300" onClick={closeMenus}>
               Review
             </Link>
           </li>
@@ -73,30 +78,35 @@ const Header = () => {
             {isUtilityOpen && (
               <ul className="absolute left-0 mt-2 w-48 bg-gray-700 rounded-md shadow-lg py-1 z-10">
                 <li>
-                  <Link href="/diff" className="block px-4 py-2 text-sm hover:bg-gray-600">
+                  <Link href="/diff" className="block px-4 py-2 text-sm hover:bg-gray-600" onClick={closeMenus}>
                     DocDiff
                   </Link>
                 </li>
                 <li>
-                  <Link href="/week-calendar" className="block px-4 py-2 text-sm hover:bg-gray-600">
+                  <Link href="/week-calendar" className="block px-4 py-2 text-sm hover:bg-gray-600" onClick={closeMenus}>
                     Week Calendar
                   </Link>
                 </li>
                 <li>
-                  <Link href="/ladder" className="block px-4 py-2 text-sm hover:bg-gray-600">
+                  <Link href="/ladder" className="block px-4 py-2 text-sm hover:bg-gray-600" onClick={closeMenus}>
                     Ladder Game
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/clocks" className="block px-4 py-2 text-sm hover:bg-gray-600" onClick={closeMenus}>
+                    Clocks
                   </Link>
                 </li>
               </ul>
             )}
           </li>
           <li>
-            <Link href="/links" className="hover:text-gray-300">
+            <Link href="/links" className="hover:text-gray-300" onClick={closeMenus}>
               Links
             </Link>
           </li>
           <li>
-            <Link href="/about" className="hover:text-gray-300">
+            <Link href="/about" className="hover:text-gray-300" onClick={closeMenus}>
               About
             </Link>
           </li>
@@ -125,12 +135,12 @@ const Header = () => {
               </li>
             )}
             <li>
-              <Link href="/" className="hover:text-gray-300">
+              <Link href="/" className="hover:text-gray-300" onClick={closeMenus}>
                 AI
               </Link>
             </li>
             <li>
-              <Link href="/book-review" className="hover:text-gray-300">
+              <Link href="/book-review" className="hover:text-gray-300" onClick={closeMenus}>
                 Review
               </Link>
             </li>
@@ -141,25 +151,30 @@ const Header = () => {
               {isUtilityOpen && (
                 <ul className="pl-4 mt-2 space-y-2">
                   <li>
-                    <Link href="/diff" className="hover:text-gray-300">
+                    <Link href="/diff" className="hover:text-gray-300" onClick={closeMenus}>
                       DocDiff
                     </Link>
                   </li>
                   <li>
-                    <Link href="/week-calendar" className="hover:text-gray-300">
+                    <Link href="/week-calendar" className="hover:text-gray-300" onClick={closeMenus}>
                       Week Calendar
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/clocks" className="hover:text-gray-300" onClick={closeMenus}>
+                      Clocks
                     </Link>
                   </li>
                 </ul>
               )}
             </li>
             <li>
-              <Link href="/links" className="hover:text-gray-300">
+              <Link href="/links" className="hover:text-gray-300" onClick={closeMenus}>
                 Links
               </Link>
             </li>
             <li>
-              <Link href="/about" className="hover:text-gray-300">
+              <Link href="/about" className="hover:text-gray-300" onClick={closeMenus}>
                 About
               </Link>
             </li>
