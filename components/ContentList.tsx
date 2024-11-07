@@ -1,17 +1,20 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Pagination from './Pagination';
 import { useSearchParams } from 'next/navigation';
-import { FaEdit, FaCalendarAlt, FaTrash } from 'react-icons/fa';
+import { FaEdit, FaCalendarAlt, FaTrash, FaEye, FaFolder } from 'react-icons/fa';
+import PreviewModal from './PreviewModal';
+import Pagination from './Pagination';
 
-const POSTS_PER_PAGE = 10; // 페이지당 포스트 수
+const POSTS_PER_PAGE = 10;
 
 export default function ContentList({ onPostSelect }: {
   onPostSelect: (post: Post) => void;
 }) {
   const [posts, setPosts] = useState<Post[] | []>([]);
   const [totalPages, setTotalPages] = useState(1);
+  const [showPreview, setShowPreview] = useState(false);
+  const [previewHtml, setPreviewHtml] = useState('');
   const searchParams = useSearchParams();
   const currentPage = Number(searchParams.get('page')) || 1;
 
@@ -55,7 +58,6 @@ export default function ContentList({ onPostSelect }: {
           method: 'DELETE',
         });
         if (response.ok) {
-          // 포스트 삭제 후 목록 새로고침
           fetchPosts(currentPage);
         } else {
           console.error('Failed to delete post');
@@ -63,6 +65,42 @@ export default function ContentList({ onPostSelect }: {
       } catch (error) {
         console.error('Error deleting post:', error);
       }
+    }
+  }
+
+  const setPreview = async (content: string) => {
+    try {
+      const response = await fetch('/api/posts/preview', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ content }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setPreviewHtml(data.html);
+        setShowPreview(true);
+      } else {
+        console.error('Failed to generate preview');
+      }
+    } catch (error) {
+      console.error('Error generating preview:', error);
+    }
+  }
+
+  const handlePreview = async (id: string) => {
+    try {
+      const response = await fetch(`/api/posts/?id=${id}`);
+      if (response.ok) {
+        const data = await response.json();
+        await setPreview(data.content)        
+      } else {
+        console.error('Failed to fetch post for preview');
+      }
+    } catch (error) {
+      console.error('Error fetching post for preview:', error);
     }
   }
 
@@ -79,8 +117,20 @@ export default function ContentList({ onPostSelect }: {
                   <FaCalendarAlt className="mr-2" />
                   {new Date(post.date).toLocaleDateString()}
                 </p>
+                <p className="text-sm text-gray-600 mt-1 flex items-center">
+                  <FaFolder className="mr-2" />
+                  {post.category}
+                </p>
               </div>
               <div className="flex space-x-2">
+                <button
+                  type="button"
+                  onClick={() => handlePreview(post.id)}
+                  className="px-4 py-2 bg-green-500 text-white rounded-lg transition-colors duration-300 hover:bg-green-600 flex items-center"
+                >
+                  <FaEye className="mr-2" />
+                  Preview
+                </button>
                 <button
                   type="button"
                   onClick={() => fetchPost(post.id)}
@@ -105,6 +155,11 @@ export default function ContentList({ onPostSelect }: {
       <div className="mt-8">
         <Pagination currentPage={currentPage} totalPages={totalPages} />
       </div>
+      <PreviewModal
+        isOpen={showPreview}
+        onClose={() => setShowPreview(false)}
+        html={previewHtml}
+      />
     </div>
   );
 }
